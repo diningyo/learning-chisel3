@@ -72,3 +72,9 @@ lazy val commonSettings = Seq (
 
 lazy val chiselFlatSpec = (project in file("chisel-flat-spec")).
   settings(commonSettings: _*)
+
+lazy val chiselFlatSpecWithArgs = (project in file("chisel-flat-spec-with-args")).
+  settings(commonSettings: _*)
+
+lazy val loadChiselMem = (project in file("load-chisel-mem")).
+  settings(commonSettings: _*)

@@ -26,3 +26,20 @@ sbt "project chiselFlatSpec"
 sbt "test"
 ```
 
+### ChiselFlasSpecWithArgs
+ChiselFlatSpec使った形式のテストを実行する際にプログラム引数を渡す方法が無いかを試したプロジェクト。
+Chiselのモジュール自体はChselFlatSpecプロジェクトと一緒で、テストモジュールに引数処理部分を追加したもの。
+単純に実行するだけなら、以下で可能。
+
+```bash
+sbt "project chiselFlatSpecWithArgs"
+sbt "test"
+```
+
+プログラム引数を使う場合は以下。
+
+```bash
+sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
+```
+
+
