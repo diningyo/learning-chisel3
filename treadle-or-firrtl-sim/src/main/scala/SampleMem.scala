@@ -1,8 +1,8 @@
 
 import chisel3._
-import chisel3.util.log2Ceil
+import chisel3.util.{Irrevocable, log2Ceil}
 
-class SampleMem(size: Int) extends Module {
+class SimpleMem(size: Int) extends Module {
   val io = IO(new Bundle {
     val wren = Input(Bool())
     val rden = Input(Bool())
