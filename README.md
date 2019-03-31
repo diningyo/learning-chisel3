@@ -42,4 +42,19 @@ sbt "test"
 sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
 ```
 
+### treadleOrFirrtlSim
+
+ChiselのPeekPokeTesterを使った試験の際に遭遇した挙動の調査を行うためのサブプロジェクト（作りかけ）
+
+```bash
+sbt "project chiselFlatSpecWithArgs"
+sbt "test"
+```
+
+プログラム引数を使う場合は以下。
+
+```bash
+sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
+```
+
 

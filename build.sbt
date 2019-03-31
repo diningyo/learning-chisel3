@@ -78,3 +78,6 @@ lazy val chiselFlatSpecWithArgs = (project in file("chisel-flat-spec-with-args")
 
 lazy val loadChiselMem = (project in file("load-chisel-mem")).
   settings(commonSettings: _*)
+
+lazy val treadleOrFirrtlSim = (project in file("treadle-or-firrtl-sim")).
+  settings(commonSettings: _*)
