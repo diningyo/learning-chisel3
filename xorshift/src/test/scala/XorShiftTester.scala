@@ -2,8 +2,7 @@
 
 import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
 
-class XorShiftUnitTester(c: XorShift32Fixed) extends PeekPokeTester(c) {
-
+trait XorShiftCalc {
   /**
     * XorShift32の期待値生成
     * @param seed シード
@@ -16,17 +15,39 @@ class XorShiftUnitTester(c: XorShift32Fixed) extends PeekPokeTester(c) {
     y = y ^ (y << 5)  & BigInt("ffffffff", 16)
     y & BigInt("ffffffff", 16)
   }
-
 }
+
+class XorShift32FixedUnitTester(c: XorShift32Fixed) extends PeekPokeTester(c) with XorShiftCalc
+class XorShiftUnitTester(c: XorShift) extends PeekPokeTester(c) with XorShiftCalc
+
 
 class XorShiftTester extends ChiselFlatSpec {
 
-  behavior of "XorShift"
+  behavior of "XorShift32Fixed"
 
   val defaultArgs: Array[String] = Array("--generate-vcd-output=on")
 
   it should "updateがHighの時には毎サイクル乱数が生成される" in {
     Driver.execute(defaultArgs, () => new XorShift32Fixed(BigInt(1), List(0, 1024))) {
+      c => new XorShift32FixedUnitTester(c) {
+        reset()
+
+        var exp = BigInt(1)
+        for (i <- 0 until 10) {
+          exp = xorshift32(exp)
+          println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
+          poke(c.io.update, true)
+          step(1)
+          expect(c.io.randOut, exp & BigInt("3ff", 16))
+        }
+      }
+    } should be (true)
+  }
+
+  behavior of "XorShift32"
+
+  it should "updateがHighの時には毎サイクル乱数が生成される" in {
+    Driver.execute(defaultArgs, () => new XorShift(XorShift32, BigInt(1), List(0, 1024))) {
       c => new XorShiftUnitTester(c) {
         reset()
 
@@ -41,4 +62,5 @@ class XorShiftTester extends ChiselFlatSpec {
       }
     } should be (true)
   }
+
 }
