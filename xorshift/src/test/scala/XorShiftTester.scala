@@ -2,7 +2,7 @@
 
 import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
 
-class XorShiftUnitTester(c: XorShift) extends PeekPokeTester(c) {
+class XorShiftUnitTester(c: XorShift32Fixed) extends PeekPokeTester(c) {
 
   /**
     * XorShift32の期待値生成
@@ -26,7 +26,7 @@ class XorShiftTester extends ChiselFlatSpec {
   val defaultArgs: Array[String] = Array("--generate-vcd-output=on")
 
   it should "updateがHighの時には毎サイクル乱数が生成される" in {
-    Driver.execute(defaultArgs, () => new XorShift(BigInt(1), List(0, 1024))) {
+    Driver.execute(defaultArgs, () => new XorShift32Fixed(BigInt(1), List(0, 1024))) {
       c => new XorShiftUnitTester(c) {
         reset()
 

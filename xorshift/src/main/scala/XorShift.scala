@@ -3,11 +3,14 @@
 import chisel3._
 import chisel3.util.{log2Ceil}
 
+abstract class XorShiftBase extends Module
+
+
 /**
-  *  XorShift
+  *  XorShift32
   *  とりあえず32bitベタ書き版
   */
-class XorShift(seed: BigInt, range: List[BigInt]) extends Module {
+class XorShift32Fixed(seed: BigInt, range: List[BigInt]) extends XorShiftBase {
 
   require(range.length == 2, "range size must be 2 (min: Int, max: Int)")
 
