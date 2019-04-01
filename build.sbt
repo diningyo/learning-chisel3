@@ -81,3 +81,7 @@ lazy val loadChiselMem = (project in file("load-chisel-mem")).
 
 lazy val treadleOrFirrtlSim = (project in file("treadle-or-firrtl-sim")).
   settings(commonSettings: _*)
+
+lazy val xorShift = (project in file("xorshift")).
+  settings(commonSettings: _*)
+
