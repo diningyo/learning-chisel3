@@ -57,4 +57,14 @@ sbt "test"
 sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
 ```
 
+### xorShift
 
+XorShiftを使った乱数生成回路用のサブプロジェクト。
+Chiselのテスト用メモリのI/Fのタイミングをランダムにするために作ったやつ。
+　→　普通にVerilogで書いて埋めたほうが楽な気はするがそこは気にしない。
+せっかくなので、ベタ書きのXorShift32版を元にリファクタリングしてChiselっぽく書き換えていくことにする。
+
+```bash
+sbt "project xorShift"
+sbt "test"
+```
