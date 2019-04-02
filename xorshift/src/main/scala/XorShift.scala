@@ -1,5 +1,6 @@
 // See LICENSE for license details.
 
+import XorShift32.regBits
 import chisel3._
 import chisel3.util.{Cat, log2Ceil}
 
@@ -62,13 +63,21 @@ case object XorShift32 extends XorShiftN {
   def shiftFunc: Array[UInt => UInt] = Array(y0, y1, y2, y3)
 }
 
-/*
+
 case object XorShift64 extends XorShiftN {
   override def bits: Int = 64
-  override def bufNum: Int = 2
-  override def regBits: Int = 32
+  override def bufNum: Int = 3
+  override def regBits: Int = 64
+
+  val y0 = (y: UInt) => y ^ (y << 13.U).asUInt()(regBits - 1, 0)
+  val y1 = (y: UInt) => y ^ (y >> 7.U).asUInt()(regBits - 1, 0)
+  val y2 = (y: UInt) => y ^ (y << 17.U).asUInt()(regBits - 1, 0)
+  val y3 = (y: UInt) => y
+
+  def shiftFunc: Array[UInt => UInt] = Array(y0, y1, y2, y3)
 }
 
+/*
 case object XorShift96 extends XorShiftN {
   override def bits: Int = 96
   override def bufNum: Int = 3
@@ -99,9 +108,9 @@ class XorShift(randN: XorShiftN, seed: BigInt, outBits: Int) extends Module {
     val randOut = Output(UInt(outBits.W))
   })
 
-  val calcBuf = Wire(Vec(randN.bufNum, UInt(randN.bits.W)))
-  val calcBufR = Reg(Vec(randN.bufNum, UInt(randN.bits.W)))
-  val rand = RegInit(seed.asUInt(32.W))
+  val calcBuf = Wire(Vec(randN.bufNum, UInt(randN.regBits.W)))
+  val calcBufR = Reg(Vec(randN.bufNum, UInt(randN.regBits.W)))
+  val rand = RegInit(seed.asUInt(randN.regBits.W))
 
   (VecInit(rand) ++ calcBuf, calcBuf ++ VecInit(rand), randN.shiftFunc).zipped.map {
     case (x, y, f) =>  y := Mux(io.update, f(x), 0.U)
