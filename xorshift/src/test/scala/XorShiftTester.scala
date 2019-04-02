@@ -67,7 +67,7 @@ class XorShiftTester extends ChiselFlatSpec {
     val dst = "xorshift32"
     val dstDir = "test_run_dir/" + dst
 
-    for (bits <- 10 until 11) {
+    for (bits <- 1 until 32) {
       Driver.execute(defaultArgs ++
         Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
         () => new XorShift(XorShift32, BigInt(1), bits)) {
@@ -76,7 +76,7 @@ class XorShiftTester extends ChiselFlatSpec {
             reset()
 
             var rand = BigInt(1)
-            for (i <- 0 until 10000) {
+            for (i <- 0 until 1000) {
               rand = xorshift32(rand)
               val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
               println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
@@ -95,7 +95,7 @@ class XorShiftTester extends ChiselFlatSpec {
     val dst = "xorshift64"
     val dstDir = "test_run_dir/" + dst
 
-    for (bits <- 10 until 11) {
+    for (bits <- 1 until 32) {
       Driver.execute(defaultArgs ++
         Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
         () => new XorShift(XorShift64, BigInt(1), bits)) {
@@ -104,7 +104,7 @@ class XorShiftTester extends ChiselFlatSpec {
             reset()
 
             var rand = BigInt(1)
-            for (i <- 0 until 10) {
+            for (i <- 0 until 1000) {
               rand = xorshift64(rand)
               val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
               println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
