@@ -28,7 +28,11 @@ class XorShiftTester extends ChiselFlatSpec {
   val defaultArgs: Array[String] = Array("--generate-vcd-output=on")
 
   it should "updateがHighの時には毎サイクル乱数が生成される" in {
-    Driver.execute(defaultArgs, () => new XorShift32Fixed(BigInt(1), List(0, 1024))) {
+    val dst = "xorshift32fixed"
+    val dstDir = "test_run_dir/" + dst
+    Driver.execute(defaultArgs ++
+      Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
+      () => new XorShift32Fixed(BigInt(1), List(0, 1024))) {
       c => new XorShift32FixedUnitTester(c) {
         reset()
 
@@ -47,20 +51,29 @@ class XorShiftTester extends ChiselFlatSpec {
   behavior of "XorShift32"
 
   it should "updateがHighの時には毎サイクル乱数が生成される" in {
-    Driver.execute(defaultArgs, () => new XorShift(XorShift32, BigInt(1), List(0, 1024))) {
-      c => new XorShiftUnitTester(c) {
-        reset()
+    val dst = "xorshift"
+    val dstDir = "test_run_dir/" + dst
 
-        var exp = BigInt(1)
-        for (i <- 0 until 10) {
-          exp = xorshift32(exp)
-          println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
-          poke(c.io.update, true)
-          step(1)
-          expect(c.io.randOut, exp & BigInt("3ff", 16))
-        }
-      }
-    } should be (true)
+    for (bits <- 10 until 11) {
+      Driver.execute(defaultArgs ++
+        Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
+        () => new XorShift(XorShift32, BigInt(1), bits)) {
+        c =>
+          new XorShiftUnitTester(c) {
+            reset()
+
+            var rand = BigInt(1)
+            for (i <- 0 until 10000) {
+              rand = xorshift32(rand)
+              val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
+              println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
+              poke(c.io.update, true)
+              step(1)
+              expect(c.io.randOut, exp)
+            }
+          }
+      } should be(true)
+    }
   }
 
 }

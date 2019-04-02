@@ -46,7 +46,7 @@ sealed trait XorShiftN {
   def bufNum: Int
   def regBits: Int
 
-  val shiftFunc:Array[UInt => UInt] = Array()
+  def shiftFunc: Array[UInt => UInt]
 }
 
 case object XorShift32 extends XorShiftN {
@@ -59,9 +59,10 @@ case object XorShift32 extends XorShiftN {
   val y2 = (y: UInt) => y ^ (y << 5.U).asUInt()(regBits - 1, 0)
   val y3 = (y: UInt) => y
 
-  override val shiftFunc = Array(y0, y1, y2, y3)
+  val shiftFunc = Array(y0, y1, y2, y3)
 }
 
+/*
 case object XorShift64 extends XorShiftN {
   override def bits: Int = 64
   override def bufNum: Int = 2
@@ -85,16 +86,11 @@ case object XorShift256 extends XorShiftN {
   override def bufNum: Int = 4
   override def regBits: Int = 64
 }
+*/
 
-class XorShift(randN: XorShiftN, seed: BigInt, range: List[BigInt]) extends Module {
+class XorShift(randN: XorShiftN, seed: BigInt, outBits: Int) extends Module {
 
   require(seed != 0, "seed != 0")
-  require(range.length == 2, "range size must be 2 (min: Int, max: Int)")
-
-  val min :: max :: Nil = range
-
-  val outBits = log2Ceil(max)
-
   require(outBits <= randN.bits, s"output bit width <= ${randN.bits}")
 
   val io = IO(new Bundle {
@@ -103,23 +99,18 @@ class XorShift(randN: XorShiftN, seed: BigInt, range: List[BigInt]) extends Modu
     val randOut = Output(UInt(outBits.W))
   })
 
-  val bufNum = randN.bufNum
-
-  val initVal = Seq.fill(bufNum)(0.U(32.W))
-  val calcBuf = WireInit(VecInit(initVal))
+  val calcBuf = Wire(Vec(randN.bufNum, UInt(randN.bits.W)))
+  val calcBufR = Reg(Vec(randN.bufNum, UInt(randN.bits.W)))
   val rand = RegInit(seed.asUInt(32.W))
 
-  (Vec(rand) ++ calcBuf, calcBuf, randN.shiftFunc).zipped.map {
-    case (x, y, f) =>  when (io.update) {
-      y := f(x)
-      printf("(x, y) = (%x, %x)\n", x, y)
-    }
+  (VecInit(rand) ++ calcBuf, calcBuf ++ VecInit(rand), randN.shiftFunc).zipped.map {
+    case (x, y, f) =>  y := Mux(io.update, f(x), 0.U)
   }
 
   when(io.update) {
-    rand := calcBuf(bufNum - 1)
+    rand := calcBuf(randN.bufNum - 1)
   }
 
   io.randEn := true.B
-  io.randOut := Cat(calcBuf.reverse)(outBits - 1, 0)
+  io.randOut := rand(outBits - 1, 0)
 }
