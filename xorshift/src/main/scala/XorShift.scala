@@ -59,7 +59,7 @@ case object XorShift32 extends XorShiftN {
   val y2 = (y: UInt) => y ^ (y << 5.U).asUInt()(regBits - 1, 0)
   val y3 = (y: UInt) => y
 
-  val shiftFunc = Array(y0, y1, y2, y3)
+  def shiftFunc: Array[UInt => UInt] = Array(y0, y1, y2, y3)
 }
 
 /*
