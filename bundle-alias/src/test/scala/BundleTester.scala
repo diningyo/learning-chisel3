@@ -1,4 +1,4 @@
-// See README.md for license details.
+// See LICENSE for license details.
 import chisel3._
 import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
 
