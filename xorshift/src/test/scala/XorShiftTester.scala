@@ -10,10 +10,11 @@ trait XorShiftCalc {
     */
   def xorshift32(seed: BigInt): BigInt = {
     var y = seed
-    y = y ^ (y << 13) & BigInt("ffffffff", 16)
-    y = y ^ (y >> 17) & BigInt("ffffffff", 16)
-    y = y ^ (y << 5)  & BigInt("ffffffff", 16)
-    y & BigInt("ffffffff", 16)
+    val mask = "f" * 8
+    y = y ^ (y << 13) & BigInt(mask, 16)
+    y = y ^ (y >> 17) & BigInt(mask, 16)
+    y = y ^ (y << 5)  & BigInt(mask, 16)
+    y & BigInt(mask, 16)
   }
 
   /**
@@ -23,10 +24,25 @@ trait XorShiftCalc {
     */
   def xorshift64(seed: BigInt): BigInt = {
     var y = seed
-    y = y ^ (y << 13) & BigInt("ffffffffffffffff", 16)
-    y = y ^ (y >> 7)  & BigInt("ffffffffffffffff", 16)
-    y = y ^ (y << 17)  & BigInt("ffffffffffffffff", 16)
-    y & BigInt("ffffffffffffffff", 16)
+    val mask = "f" * 16
+    y = y ^ (y << 13) & BigInt(mask, 16)
+    y = y ^ (y >> 7)  & BigInt(mask, 16)
+    y = y ^ (y << 17)  & BigInt(mask, 16)
+    y & BigInt(mask, 16)
+  }
+
+  /**
+    * XorShift96の期待値生成
+    * @param seed シード
+    * @return XorShift96で生成した乱数値
+    */
+  def xorshift96(seed: BigInt): BigInt = {
+    var y = seed
+    val mask = "f" * 24
+    y = y ^ (y << 13) & BigInt(mask, 16)
+    y = y ^ (y >> 7)  & BigInt(mask, 16)
+    y = y ^ (y << 17)  & BigInt(mask, 16)
+    y & BigInt(mask, 16)
   }
 }
 
@@ -106,6 +122,34 @@ class XorShiftTester extends ChiselFlatSpec {
             var rand = BigInt(1)
             for (i <- 0 until 1000) {
               rand = xorshift64(rand)
+              val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
+              println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
+              poke(c.io.update, true)
+              step(1)
+              expect(c.io.randOut, exp)
+            }
+          }
+      } should be(true)
+    }
+  }
+
+  behavior of "XorShift96"
+
+  it should "updateがHighの時には毎サイクル乱数が生成される" in {
+    val dst = "xorshift96"
+    val dstDir = "test_run_dir/" + dst
+
+    for (bits <- 1 until 32) {
+      Driver.execute(defaultArgs ++
+        Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
+        () => new XorShift(XorShift64, BigInt(1), bits)) {
+        c =>
+          new XorShiftUnitTester(c) {
+            reset()
+
+            var rand = BigInt(1)
+            for (i <- 0 until 1000) {
+              rand = xorshift96(rand)
               val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
               println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
               poke(c.io.update, true)

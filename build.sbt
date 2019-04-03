@@ -85,3 +85,6 @@ lazy val treadleOrFirrtlSim = (project in file("treadle-or-firrtl-sim")).
 lazy val xorShift = (project in file("xorshift")).
   settings(commonSettings: _*)
 
+lazy val bundleAlias = (project in file("bundle-alias")).
+  settings(commonSettings: _*)
+

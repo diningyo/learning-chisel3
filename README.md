@@ -68,3 +68,14 @@ Chiselのテスト用メモリのI/Fのタイミングをランダムにする�
 sbt "project xorShift"
 sbt "test"
 ```
+
+### bundleAlias
+
+`Bundle`を使ってデータを構造化した場合に、`Bundle`配下のデータの名前が長いな、、どうにか出来るよね、これ。
+というのを確認するためのサブプロジェクト。
+
+```bash
+sbt "project bundleAlias"
+sbt "test"
+```
+
