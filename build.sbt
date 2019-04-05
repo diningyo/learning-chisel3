@@ -70,21 +70,23 @@ lazy val commonSettings = Seq (
   })
 )
 
-lazy val chiselFlatSpec = (project in file("chisel-flat-spec")).
+lazy val chiselFlatSpec = (project in file("subprj/chisel-flat-spec")).
   settings(commonSettings: _*)
 
-lazy val chiselFlatSpecWithArgs = (project in file("chisel-flat-spec-with-args")).
+lazy val chiselFlatSpecWithArgs = (project in file("subprj/chisel-flat-spec-with-args")).
   settings(commonSettings: _*)
 
-lazy val loadChiselMem = (project in file("load-chisel-mem")).
+lazy val loadChiselMem = (project in file("subprj/load-chisel-mem")).
   settings(commonSettings: _*)
 
-lazy val treadleOrFirrtlSim = (project in file("treadle-or-firrtl-sim")).
+lazy val treadleOrFirrtlSim = (project in file("subprj/treadle-or-firrtl-sim")).
   settings(commonSettings: _*)
 
-lazy val xorShift = (project in file("xorshift")).
+lazy val xorShift = (project in file("subprj/xorshift")).
   settings(commonSettings: _*)
 
-lazy val bundleAlias = (project in file("bundle-alias")).
+lazy val bundleAlias = (project in file("subprj/bundle-alias")).
   settings(commonSettings: _*)
 
+lazy val uintAndSIntShift = (project in file("subprj/uint-and-sint-shift")).
+  settings(commonSettings: _*)
