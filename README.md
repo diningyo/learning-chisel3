@@ -17,7 +17,7 @@
 
 ## 現在登録されているプロジェクト
 
-### ChiselFlatSpec
+### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
 以下で実行可能なはず。
 
@@ -26,7 +26,7 @@ sbt "project chiselFlatSpec"
 sbt "test"
 ```
 
-### ChiselFlasSpecWithArgs
+### chiselFlasSpecWithArgs
 ChiselFlatSpec使った形式のテストを実行する際にプログラム引数を渡す方法が無いかを試したプロジェクト。
 Chiselのモジュール自体はChselFlatSpecプロジェクトと一緒で、テストモジュールに引数処理部分を追加したもの。
 単純に実行するだけなら、以下で可能。
@@ -73,6 +73,32 @@ sbt "test"
 
 `Bundle`を使ってデータを構造化した場合に、`Bundle`配下のデータの名前が長いな、、どうにか出来るよね、これ。
 というのを確認するためのサブプロジェクト。
+
+例えば、わざとらしいけど以下のような`Bundle`を考えた時に`io.a.bb.ccc`にアクセスしやすくすることが出来るかを確かめる
+
+```scala
+class A(hasOptPort: Boolean = true) extends Bundle {
+  val a = new Bundle {
+    val bb = new Bundle {
+      val ccc = new Bundle {
+        val d = Input(Bool())
+        val e = Output(Bool())
+        val f = Input(UInt(32.W))
+        val g = if (hasOptPort) Some(Output(UInt(32.W))) else None
+      }
+    }
+  }
+}
+
+class B(hasOptPort: Boolean = true) extends Module {
+  val io = IO(new A)
+
+  io.a.bb.ccc.e := io.a.bb.ccc.d       // Bundleで構造化していくと
+  if (hasOptPort) {
+    io.a.bb.ccc.g.get := io.a.bb.ccc.f // どんどん深くなっていく
+  }
+}
+```
 
 ```bash
 sbt "project bundleAlias"
