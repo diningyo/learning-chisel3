@@ -21,35 +21,33 @@ class ShiftTestModule extends Module {
 }
 
 class UIntAndSIntShiftTester extends ChiselFlatSpec {
+
   behavior of "ShiftTest"
 
   it should "UIntの右シフトは論理シフトになる" in {
     Driver.execute(Array(""), () => new ShiftTestModule) {
-      c =>
-        new PeekPokeTester(c) {
-          println(s"0x${peek(c.io.uintOut).toInt.toHexString}")
-          expect(c.io.uintOut, 0xdeadbe)
-        }
+      c => new PeekPokeTester(c) {
+        println(s"0x${peek(c.io.uintOut).toInt.toHexString}")
+        expect(c.io.uintOut, 0xdeadbe)
+      }
     }
   }
 
   it should "SIntの右シフトは算術シフトとなり、空いた上位ビットは符号ビット拡張が行われる" in {
     Driver.execute(Array(""), () => new ShiftTestModule) {
-      c =>
-        new PeekPokeTester(c) {
-          println(s"0x${peek(c.io.sintOut).toInt.toHexString}")
-          expect(c.io.sintOut, 0xffdeadbe)
-        }
+      c => new PeekPokeTester(c) {
+        println(s"0x${peek(c.io.sintOut).toInt.toHexString}")
+        expect(c.io.sintOut, 0xffdeadbe)
+      }
     }
   }
 
   it should "SIntを右にシフトしたものをUIntに変換すると、符号ビットが0にセットされる" in {
     Driver.execute(Array(""), () => new ShiftTestModule) {
-      c =>
-        new PeekPokeTester(c) {
-          println(s"0x${peek(c.io.sintToUIntOut).toInt.toHexString}")
-          expect(c.io.sintToUIntOut, 0xfdeadbe)
-        }
+      c => new PeekPokeTester(c) {
+        println(s"0x${peek(c.io.sintToUIntOut).toInt.toHexString}")
+        expect(c.io.sintToUIntOut, 0xfdeadbe)
+      }
     }
   }
 
