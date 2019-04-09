@@ -17,6 +17,13 @@
 
 ## 現在登録されているプロジェクト
 
+- [chiselFlatSpec](#chiselFlatSpec)
+- [chiselFlasSpecWithArgs](#chiselFlasSpecWithArgs)
+- [treadleOrFirrtlSim](#treadleOrFirrtlSim)
+- [xorShift](#xorShift)
+- [bundleAlias](#bundleAlias)
+- [uintAndSIntShift](#uintAndSIntShift)
+
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
 以下で実行可能なはず。
@@ -105,3 +112,11 @@ sbt "project bundleAlias"
 sbt "test"
 ```
 
+### uintAndSIntShift
+
+Chiselで算術右シフトのやり方をキャストをした際の挙動を調べたもの。
+
+```bash
+sbt "project uintAndSIntShift"
+sbt "test"
+```
