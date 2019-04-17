@@ -120,3 +120,24 @@ Chiselで算術右シフトのやり方をキャストをした際の挙動を�
 sbt "project uintAndSIntShift"
 sbt "test"
 ```
+
+### parallelTestExecution
+
+ScalaTestの`ParallelTestExecution`を使ってChiselFlatSpecを継承して作った
+テストクラス内のテストを並列実行する処理を確認するためのサブプロジェクト。
+
+```bash
+sbt "project parallelTestExecution"
+```
+
+#### 逐次実行する場合のコマンド
+
+```bash
+sbt "testOnly SequentialTester"
+```
+
+#### 並列実行する場合のコマンド
+
+```bash
+testOnly ParallelTester
+```

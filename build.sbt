@@ -79,6 +79,9 @@ lazy val chiselFlatSpecWithArgs = (project in file("subprj/chisel-flat-spec-with
 lazy val loadChiselMem = (project in file("subprj/load-chisel-mem")).
   settings(commonSettings: _*)
 
+lazy val parallelTestExecution = (project in file("subprj/parallel-test-execution")).
+  settings(commonSettings: _*)
+
 lazy val treadleOrFirrtlSim = (project in file("subprj/treadle-or-firrtl-sim")).
   settings(commonSettings: _*)
 
