@@ -14,6 +14,7 @@
 
 通常のsbt使ったプロジェクトと同様。<br>
 基本的にトピック毎にサブプロジェクトを作成していく予定なので、動かしたいプロジェクトに切り替えて実行するのが良い気がする。
+なお以下に書いているコマンドは`sbt`を起動した状態で入力する形で記載しているので注意。
 
 ## 現在登録されているプロジェクト
 
@@ -31,8 +32,8 @@
 以下で実行可能なはず。
 
 ```bash
-sbt "project chiselFlatSpec"
-sbt "test"
+project chiselFlatSpec
+test"
 ```
 
 ### chiselFlasSpecWithArgs
@@ -41,14 +42,14 @@ Chiselのモジュール自体はChselFlatSpecプロジェクトと一緒で、�
 単純に実行するだけなら、以下で可能。
 
 ```bash
-sbt "project chiselFlatSpecWithArgs"
-sbt "test"
+project chiselFlatSpecWithArgs
+test
 ```
 
 プログラム引数を使う場合は以下。
 
 ```bash
-sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
+testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true
 ```
 
 ### treadleOrFirrtlSim
@@ -56,14 +57,14 @@ sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D-
 ChiselのPeekPokeTesterを使った試験の際に遭遇した挙動の調査を行うためのサブプロジェクト（作りかけ）
 
 ```bash
-sbt "project chiselFlatSpecWithArgs"
-sbt "test"
+project chiselFlatSpecWithArgs
+test
 ```
 
 プログラム引数を使う場合は以下。
 
 ```bash
-sbt "testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true"
+testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true
 ```
 
 ### xorShift
@@ -74,8 +75,8 @@ Chiselのテスト用メモリのI/Fのタイミングをランダムにする�
 せっかくなので、ベタ書きのXorShift32版を元にリファクタリングしてChiselっぽく書き換えていくことにする。
 
 ```bash
-sbt "project xorShift"
-sbt "test"
+project xorShift
+test
 ```
 
 ### bundleAlias
@@ -110,8 +111,8 @@ class B(hasOptPort: Boolean = true) extends Module {
 ```
 
 ```bash
-sbt "project bundleAlias"
-sbt "test"
+project bundleAlias
+test
 ```
 
 ### uintAndSIntShift
@@ -119,8 +120,8 @@ sbt "test"
 Chiselで算術右シフトのやり方をキャストをした際の挙動を調べたもの。
 
 ```bash
-sbt "project uintAndSIntShift"
-sbt "test"
+project uintAndSIntShift
+test
 ```
 
 ### parallelTestExecution
@@ -129,13 +130,13 @@ ScalaTestの`ParallelTestExecution`を使ってChiselFlatSpecを継承して作�
 テストクラス内のテストを並列実行する処理を確認するためのサブプロジェクト。
 
 ```bash
-sbt "project parallelTestExecution"
+project parallelTestExecution
 ```
 
 #### 逐次実行する場合のコマンド
 
 ```bash
-sbt "testOnly SequentialTester"
+testOnly SequentialTester
 ```
 
 #### 並列実行する場合のコマンド
@@ -149,5 +150,5 @@ testOnly ParallelTester
 Chiselのメモリにファイルから読み込んだデータを設定する機能を試した時のサブプロジェクト。
 
 ```bash
-sbt "project loadChiselMem"
+project loadChiselMem
 ```
