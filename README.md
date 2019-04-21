@@ -23,6 +23,8 @@
 - [xorShift](#xorShift)
 - [bundleAlias](#bundleAlias)
 - [uintAndSIntShift](#uintAndSIntShift)
+- [parallelTestExecution](#parallelTestExecution)
+- [loadChiselMem](#loadChiselMem) 
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -140,4 +142,12 @@ sbt "testOnly SequentialTester"
 
 ```bash
 testOnly ParallelTester
+```
+
+### loadChiselMem
+
+Chiselのメモリにファイルから読み込んだデータを設定する機能を試した時のサブプロジェクト。
+
+```bash
+sbt "project loadChiselMem"
 ```

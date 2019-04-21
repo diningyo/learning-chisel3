@@ -28,21 +28,28 @@ trait XorShiftCalc {
     y = y ^ (y << 13) & BigInt(mask, 16)
     y = y ^ (y >> 7)  & BigInt(mask, 16)
     y = y ^ (y << 17)  & BigInt(mask, 16)
-    y & BigInt(mask, 16)
+    y & BigInt(mask.substring(0, 7), 16)
   }
 
   /**
     * XorShift96の期待値生成
-    * @param seed シード
-    * @return XorShift96で生成した乱数値
+    * @param in_x シード1
+    * @param in_y シード2
+    * @param in_z シード3
+    * @return
     */
-  def xorshift96(seed: BigInt): BigInt = {
-    var y = seed
-    val mask = "f" * 24
-    y = y ^ (y << 13) & BigInt(mask, 16)
-    y = y ^ (y >> 7)  & BigInt(mask, 16)
-    y = y ^ (y << 17)  & BigInt(mask, 16)
-    y & BigInt(mask, 16)
+  def xorshift96(in_x: BigInt, in_y: BigInt, in_z: BigInt): (BigInt, BigInt, BigInt) = {
+    val mask = "f" * 8
+    var x = (in_x << 3) & BigInt(mask, 16)
+    var y = (in_y >> 19) & BigInt(mask, 16)
+    var z = (in_z << 6) & BigInt(mask, 16)
+    var t = (in_x ^ (x << 3)) ^ (in_y ^ (y >> 19)) ^ (in_z ^ (z << 6))
+
+    x = y
+    y = z
+    z = t
+
+    (x, y, z)
   }
 }
 
@@ -139,7 +146,7 @@ class XorShiftTester extends ChiselFlatSpec {
     val dst = "xorshift96"
     val dstDir = "test_run_dir/" + dst
 
-    for (bits <- 1 until 32) {
+    for (bits <- 32 until 33) {
       Driver.execute(defaultArgs ++
         Array(s"--target-dir=$dstDir", s"--top-name=$dst"),
         () => new XorShift(XorShift64, BigInt(1), bits)) {
@@ -147,9 +154,13 @@ class XorShiftTester extends ChiselFlatSpec {
           new XorShiftUnitTester(c) {
             reset()
 
-            var rand = BigInt(1)
-            for (i <- 0 until 1000) {
-              rand = xorshift96(rand)
+            var rand_x = BigInt(1)
+            var rand_y = BigInt(0)
+            var rand_z = BigInt(0)
+            for (i <- 0 until 10) {
+              val randOrg = xorshift96(rand_x, rand_y, rand_z)
+              val (rand_xx, rand_yy, rand_zz) = randOrg
+              val rand = rand_z
               val exp = rand & BigInt(math.pow(2, bits).toLong - 1)
               println(s"(i, exp) = ($i, 0x${exp.toInt.toHexString})")
               poke(c.io.update, true)
