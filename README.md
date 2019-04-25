@@ -151,4 +151,5 @@ Chiselのメモリにファイルから読み込んだデータを設定する�
 
 ```bash
 project loadChiselMem
+testOnly MemoryTester 
 ```
