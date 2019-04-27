@@ -93,3 +93,6 @@ lazy val bundleAlias = (project in file("subprj/bundle-alias")).
 
 lazy val uintAndSIntShift = (project in file("subprj/uint-and-sint-shift")).
   settings(commonSettings: _*)
+
+lazy val bundleRegInit = (project in file("subprj/bundle-reg-init")).
+  settings(commonSettings: _*)
