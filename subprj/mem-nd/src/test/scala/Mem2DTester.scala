@@ -1,5 +1,6 @@
 // See LICENSE for license details.
 
+import scala.math.{floor, random}
 import chisel3.iotesters._
 
 /**
@@ -33,13 +34,12 @@ class Mem2DUnitTester(c: Mem2D) extends PeekPokeTester(c) {
     peek(c.io.rddata)
   }
 
-  import scala.math.{floor, random}
   /**
     * テストシナリオ
     *  - アドレス0-15に適当に値書いて読むだけ
     */
   for (i <- 0 until 16) {
-    val data = i + intToUnsignedBigInt(floor(random * 0xffffffffL).toInt) //0x70a0a001
+    val data = i + longToUnsignedBigInt(floor(random * 0xffffffffL).toLong)
     write(i, data)
     step(1)
     println(s"read data = 0x${read(i).toInt.toHexString}")
