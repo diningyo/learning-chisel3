@@ -65,9 +65,9 @@ lazy val commonSettings = Seq (
   ),
   scalacOptions := Seq("-deprecation", "-feature") ++ scalacOptionsVersion(scalaVersion.value),
   javacOptions ++= javacOptionsVersion(scalaVersion.value),
-  libraryDependencies ++= (Seq("chisel3", "chisel-iotesters").map {
+  libraryDependencies ++= Seq("chisel3", "chisel-iotesters").map {
     dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep))
-  })
+  }
 )
 
 lazy val chiselFlatSpec = (project in file("subprj/chisel-flat-spec")).
@@ -95,4 +95,7 @@ lazy val uintAndSIntShift = (project in file("subprj/uint-and-sint-shift")).
   settings(commonSettings: _*)
 
 lazy val bundleRegInit = (project in file("subprj/bundle-reg-init")).
+  settings(commonSettings: _*)
+
+lazy val memND = (project in file("subprj/mem-nd")).
   settings(commonSettings: _*)

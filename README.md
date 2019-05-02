@@ -26,6 +26,7 @@
 - [uintAndSIntShift](#uintAndSIntShift)
 - [parallelTestExecution](#parallelTestExecution)
 - [loadChiselMem](#loadChiselMem) 
+- [memND](#memND) 
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -152,4 +153,40 @@ Chiselのメモリにファイルから読み込んだデータを設定する�
 ```bash
 project loadChiselMem
 testOnly MemoryTester 
+```
+
+### memND
+
+Chiselの`Mem`を使って2次元のメモリを作る方法を間検討した時に作成したサブプロジェクト。<br>
+System Verilogの以下の記述で出来ることをChiselで実現してみた。
+
+```verilog
+reg [3:0][7:0] mem[0:1023]
+```
+
+#### RTLの生成コマンド
+
+以下のコマンドで"subprj/mem-nd/src/main/scala/Mem2D.scala"内のMem2DクラスのRTLが生成される。<br>
+
+```bash
+project memND
+runMain ElaborateMem2D
+```
+
+生成したRTLは以下のディレクトリに格納される。"WithWrite"と入っているファイルは`MemBase`クラスの`write`を使って書いた場合のRTLとなる。
+
+- rtl/mem2d
+  - Mem2D.anno.json
+  - Mem2D.fir
+  - Mem2D.v
+  - Mem2DWithWrite.anno.json
+  - Mem2DWithWrite.fir
+  - Mem2DWithWrite.v
+  
+#### テスト実行コマンド
+ 
+以下のコマンドでテストが実行される。 
+ 
+```bash
+ testOnly Mem2DTester
 ```
