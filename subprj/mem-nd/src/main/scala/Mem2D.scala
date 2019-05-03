@@ -3,6 +3,10 @@
 import chisel3._
 import chisel3.util.Cat
 
+/**
+  * 2次元のメモリ
+  * @param useWriteTask MemBaseのwriteメソッドを使うかどうかを選択
+  */
 class Mem2D(useWriteTask: Boolean = false) extends Module {
   val io = IO(new Bundle {
     val wren = Input(Bool())
@@ -14,14 +18,15 @@ class Mem2D(useWriteTask: Boolean = false) extends Module {
 
   val m = Mem(16, Vec(4, UInt(8.W)))
 
+  val mask = Seq.fill(4)(true.B)
+
   if (useWriteTask) {
     val wrdata = Wire(Vec(4, UInt(8.W)))
     for (i <- 0 until m(0).length) {
       wrdata(i) := io.wrdata(((i + 1) * 8) - 1, i * 8)
     }
-    m.write(io.addr, wrdata, Seq.fill(4)(true.B))
+    m.write(io.addr, wrdata, mask)
   } else {
-    val mask = Seq.fill(4)(true.B)
     for (i <- 0 until m(0).length) {
       when(io.wren && mask(i)) {
         m(io.addr)(i) := io.wrdata(((i + 1) * 8) - 1, i * 8)
