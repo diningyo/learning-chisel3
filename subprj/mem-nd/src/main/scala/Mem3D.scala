@@ -26,7 +26,7 @@ class Mem3D(useWriteTask: Boolean = false) extends Module {
       wrdata(i)(j) := io.wrdata(i)(((j + 1) * 8) - 1, j * 8)
     }
 
-    m.write(io.addr, wrdata, Seq.fill(2)(true.B))
+    m.write(io.addr, wrdata, io.wren)
   } else {
     for {i <- 0 until m(0).length
          j <- 0 until m(0)(0).length} {
