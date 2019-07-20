@@ -5,6 +5,10 @@ import chisel3.iotesters._
 
 import scala.util.Random
 
+/**
+  * NICArbiterのユニットテスト用クラス
+  * @param c テストモジュール
+  */
 class NICArbiterUnitTester(c: NICArbiter) extends PeekPokeTester(c) {
   val in = c.io.in
   val out = c.io.out
@@ -47,6 +51,9 @@ class NICArbiterUnitTester(c: NICArbiter) extends PeekPokeTester(c) {
   }
 }
 
+/**
+  * NICArbiterのテストクラス
+  */
 class NICArbiterTester extends BaseTester {
 
   behavior of "NICArbiter"

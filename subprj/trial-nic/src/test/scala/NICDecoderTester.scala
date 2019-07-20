@@ -7,7 +7,7 @@ import chisel3.iotesters._
 
 /**
   * NICDecoderのユニットテスト用クラス
-  * @param c 出力ポートの数
+  * @param c テストモジュール
   */
 class NICDecoderUnitTester(c: NICDecoder) extends PeekPokeTester(c) {
 
