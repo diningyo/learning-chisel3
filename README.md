@@ -8,7 +8,7 @@
 以下の２つが動く環境
 
 - Scala
-- sbt
+- sbt - 1.2.7
 
 ## 実行の方法
 
@@ -25,6 +25,8 @@
 - [bundleAlias](#bundleAlias)
 - [uintAndSIntShift](#uintAndSIntShift)
 - [parallelTestExecution](#parallelTestExecution)
+- [loadChiselMem](#loadChiselMem) 
+- [memND](#memND) 
 - [loadChiselMem](#loadChiselMem)
 - [bareAPICall](#bareAPICall)
 
@@ -32,7 +34,7 @@
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
 以下で実行可能なはず。
 
-```scala
+```bash
 project chiselFlatSpec
 test
 ```
@@ -42,14 +44,14 @@ ChiselFlatSpec使った形式のテストを実行する際にプログラム引
 Chiselのモジュール自体はChselFlatSpecプロジェクトと一緒で、テストモジュールに引数処理部分を追加したもの。
 単純に実行するだけなら、以下で可能。
 
-```scala
+```bash
 project chiselFlatSpecWithArgs
 test
 ```
 
 プログラム引数を使う場合は以下。
 
-```scala
+```bash
 testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true
 ```
 
@@ -57,14 +59,14 @@ testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-v
 
 ChiselのPeekPokeTesterを使った試験の際に遭遇した挙動の調査を行うためのサブプロジェクト（作りかけ）
 
-```scala
+```bash
 project chiselFlatSpecWithArgs
 test
 ```
 
 プログラム引数を使う場合は以下。
 
-```scala
+```bash
 testOnly MyTester -- -D--backend-name=firrtl -D--generate-vcd-output=on -D--is-verbose=true
 ```
 
@@ -75,7 +77,7 @@ Chiselのテスト用メモリのI/Fのタイミングをランダムにする�
 　→　普通にVerilogで書いて埋めたほうが楽な気はするがそこは気にしない。
 せっかくなので、ベタ書きのXorShift32版を元にリファクタリングしてChiselっぽく書き換えていくことにする。
 
-```scala
+```bash
 project xorShift
 test
 ```
@@ -111,7 +113,7 @@ class B(hasOptPort: Boolean = true) extends Module {
 }
 ```
 
-```scala
+```bash
 project bundleAlias
 test
 ```
@@ -120,7 +122,7 @@ test
 
 Chiselで算術右シフトのやり方をキャストをした際の挙動を調べたもの。
 
-```scala
+```bash
 project uintAndSIntShift
 test
 ```
@@ -130,19 +132,19 @@ test
 ScalaTestの`ParallelTestExecution`を使ってChiselFlatSpecを継承して作った
 テストクラス内のテストを並列実行する処理を確認するためのサブプロジェクト。
 
-```scala
+```bash
 project parallelTestExecution
 ```
 
 #### 逐次実行する場合のコマンド
 
-```scala
+```bash
 testOnly SequentialTester
 ```
 
 #### 並列実行する場合のコマンド
 
-```scala
+```bash
 testOnly ParallelTester
 ```
 
@@ -150,10 +152,46 @@ testOnly ParallelTester
 
 Chiselのメモリにファイルから読み込んだデータを設定する機能を試した時のサブプロジェクト。
 
-```scala
+```bash
 project loadChiselMem
+testOnly MemoryTester 
 ```
 
+### memND
+
+Chiselの`Mem`を使って2次元のメモリを作る方法を間検討した時に作成したサブプロジェクト。<br>
+System Verilogの以下の記述で出来ることをChiselで実現してみた。
+
+```verilog
+reg [3:0][7:0] mem[0:1023]
+```
+
+#### RTLの生成コマンド
+
+以下のコマンドで"subprj/mem-nd/src/main/scala/Mem2D.scala"内のMem2DクラスのRTLが生成される。<br>
+
+```bash
+project memND
+runMain ElaborateMem2D
+```
+
+生成したRTLは以下のディレクトリに格納される。"WithWrite"と入っているファイルは`MemBase`クラスの`write`を使って書いた場合のRTLとなる。
+
+- rtl/mem2d
+  - Mem2D.anno.json
+  - Mem2D.fir
+  - Mem2D.v
+  - Mem2DWithWrite.anno.json
+  - Mem2DWithWrite.fir
+  - Mem2DWithWrite.v
+  
+#### テスト実行コマンド
+ 
+以下のコマンドでテストが実行される。 
+ 
+```bash
+ testOnly Mem2DTester
+```
 ### bareAPICall
 
 モジュールのテストを作成していて出くわしたエラーに対しての確認用のプロジェクト。

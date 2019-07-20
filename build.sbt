@@ -68,10 +68,11 @@ lazy val commonSettings = Seq (
     "-feature",
     "-language:reflectiveCalls") ++ scalacOptionsVersion(scalaVersion.value),
   javacOptions ++= javacOptionsVersion(scalaVersion.value),
-  libraryDependencies ++= (Seq("chisel3", "chisel-iotesters").map {
+  libraryDependencies ++= Seq("chisel3", "chisel-iotesters").map {
     dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep))
   }),
   addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+  }
 )
 
 lazy val chiselFlatSpec = (project in file("subprj/chisel-flat-spec")).
@@ -97,6 +98,13 @@ lazy val bundleAlias = (project in file("subprj/bundle-alias")).
 
 lazy val uintAndSIntShift = (project in file("subprj/uint-and-sint-shift")).
   settings(commonSettings: _*)
+
+lazy val bundleRegInit = (project in file("subprj/bundle-reg-init")).
+  settings(commonSettings: _*)
+
+lazy val memND = (project in file("subprj/mem-nd")).
+  settings(commonSettings: _*)
+
 
 lazy val memStrbWrite = (project in file("subprj/mem-strb-write")).
   settings(commonSettings: _*)
