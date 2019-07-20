@@ -291,6 +291,7 @@ Temporary Items
 ## Build generated
 build/
 DerivedData
+rtl/
 
 ## Various settings
 *.pbxuser
