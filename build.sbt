@@ -63,11 +63,15 @@ lazy val commonSettings = Seq (
     Resolver.sonatypeRepo("snapshots"),
     Resolver.sonatypeRepo("releases")
   ),
-  scalacOptions := Seq("-deprecation", "-feature") ++ scalacOptionsVersion(scalaVersion.value),
+  scalacOptions := Seq(
+    "-deprecation",
+    "-feature",
+    "-language:reflectiveCalls") ++ scalacOptionsVersion(scalaVersion.value),
   javacOptions ++= javacOptionsVersion(scalaVersion.value),
   libraryDependencies ++= (Seq("chisel3", "chisel-iotesters").map {
     dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep))
-  })
+  }),
+  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 )
 
 lazy val chiselFlatSpec = (project in file("subprj/chisel-flat-spec")).
@@ -92,4 +96,22 @@ lazy val bundleAlias = (project in file("subprj/bundle-alias")).
   settings(commonSettings: _*)
 
 lazy val uintAndSIntShift = (project in file("subprj/uint-and-sint-shift")).
+  settings(commonSettings: _*)
+
+lazy val memStrbWrite = (project in file("subprj/mem-strb-write")).
+  settings(commonSettings: _*)
+
+lazy val mulDiv = (project in file("subprj/mul-div")).
+  settings(commonSettings: _*)
+
+lazy val testCtrl = (project in file("subprj/test-ctrl")).
+  settings(commonSettings: _*)
+
+lazy val grammerCheck = (project in file("subprj/grammer-check")).
+  settings(commonSettings: _*)
+
+lazy val utilQueue = (project in file("subprj/util-queue")).
+  settings(commonSettings: _*)
+
+lazy val chiselName = (project in file("subprj/chisel-name")).
   settings(commonSettings: _*)
