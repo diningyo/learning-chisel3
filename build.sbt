@@ -104,7 +104,6 @@ lazy val bundleRegInit = (project in file("subprj/bundle-reg-init")).
 lazy val memND = (project in file("subprj/mem-nd")).
   settings(commonSettings: _*)
 
-
 lazy val memStrbWrite = (project in file("subprj/mem-strb-write")).
   settings(commonSettings: _*)
 
@@ -121,4 +120,7 @@ lazy val utilQueue = (project in file("subprj/util-queue")).
   settings(commonSettings: _*)
 
 lazy val chiselName = (project in file("subprj/chisel-name")).
+  settings(commonSettings: _*)
+
+lazy val trialNIC = (project in file("subprj/trial-nic")).
   settings(commonSettings: _*)
