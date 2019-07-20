@@ -12,8 +12,17 @@ class NICArbiterIO(numOfInput: Int) extends Bundle {
 }
 
 
-class NICArbiter(defaultNumOfInput: Int) extends Module{
+class NICArbiter(defaultNumOfInput: Int, sliceEn: Boolean) extends Module{
   val io = IO(new NICArbiterIO(defaultNumOfInput))
 
   io := DontCare
+
+  val arb = Module(new Arbiter(chiselTypeOf(io.in(0).bits), defaultNumOfInput))
+  val slice = Queue(arb.io.out, 1, !sliceEn, !sliceEn)
+
+  for ((in_port, arb_in) <- io.in zip arb.io.in) {
+    arb_in <> in_port
+  }
+
+  io.out <> slice
 }

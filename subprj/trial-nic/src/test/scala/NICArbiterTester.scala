@@ -51,15 +51,107 @@ class NICArbiterTester extends BaseTester {
 
   behavior of "NICArbiter"
 
-  val testArgs = baseArgs :+ s"-tn=$it"
+  val testArgs = baseArgs :+ s"-tn=NICArbiter"
   val defaultNumOfInput = 3
 
-  it should "" in {
+  it should "特定の１ポートからのみ要求が合った場合はその要求がoutに出力される" in {
     iotesters.Driver.execute(
-      testArgs :+ s"-td=test_run_dir/$it",
-      () => new NICArbiter(defaultNumOfInput)) {
+      testArgs :+ s"-td=test_run_dir/NICArbiter-000",
+      () => new NICArbiter(defaultNumOfInput, false)) {
       c => new NICArbiterUnitTester(c) {
-        fail
+        idle(10)
+
+        for (idx <- 0 until defaultNumOfInput) {
+          val data = intToUnsignedBigInt(r.nextInt())
+          sendData(idx, data)
+          compareData(idx, data)
+          step(1)
+          idle(10)
+        }
+      }
+    } should be (true)
+  }
+
+  it should "アービターの種類を通常のArbiterにした場合、ポートのインデックスの小さいものからoutに出力される" in {
+    iotesters.Driver.execute(
+      testArgs :+ s"-td=test_run_dir/NICArbiter-001",
+      () => new NICArbiter(defaultNumOfInput, false)) {
+      c => new NICArbiterUnitTester(c) {
+        idle(10)
+
+
+        val dataSeq = Seq.fill(defaultNumOfInput)(intToUnsignedBigInt(r.nextInt()))
+
+        for ((data, idx) <- dataSeq.zipWithIndex) {
+          sendData(idx, data)
+        }
+
+        for (idx <- 0 until defaultNumOfInput) {
+          step(1)
+          compareData(idx, dataSeq(idx))
+          poke(in(idx).valid, false)
+        }
+
+        idle(10)
+      }
+    } should be (true)
+  }
+
+
+  //
+  // レジスタスライス入れた場合
+  //
+  it should "特定の１ポートからのみ要求が合った場合はその要求が1cycle後にoutに出力される" in {
+    iotesters.Driver.execute(
+      testArgs :+ s"-td=test_run_dir/NICArbiter-100",
+      () => new NICArbiter(defaultNumOfInput, true)) {
+      c => new NICArbiterUnitTester(c) {
+        idle(10)
+
+        for (idx <- 0 until defaultNumOfInput) {
+          val data = intToUnsignedBigInt(r.nextInt())
+          sendData(idx, data)
+          step(1)
+          compareData(idx, data)
+          idle(10)
+        }
+      }
+    } should be (true)
+  }
+
+  it should "アービターの種類を通常のArbiterにした場合、最初の要求から1cycle後にポートのインデックスの小さいものからoutに出力される" in {
+    iotesters.Driver.execute(
+      testArgs :+ s"-td=test_run_dir/NICArbiter-101",
+      () => new NICArbiter(defaultNumOfInput, true)) {
+      c => new NICArbiterUnitTester(c) {
+        idle(10)
+
+
+        val dataSeq = Seq.fill(defaultNumOfInput)(intToUnsignedBigInt(r.nextInt()))
+
+        for ((data, idx) <- dataSeq.zipWithIndex) {
+          sendData(idx, data)
+        }
+
+        // レジスタスライスが挿入されたので同じサイクルではvalidはfalse
+        expect(out.valid, false)
+        val readies = scala.collection.mutable.Seq.fill(defaultNumOfInput)(BigInt(0))
+
+
+        for (idx <- 0 until defaultNumOfInput) {
+          for (j <- 0 until defaultNumOfInput) {
+            readies(j) = peek(in(j).ready)
+          }
+          step(1)
+          if (readies(idx) == 0x1) {
+            poke(in(idx).valid, false)
+          }
+          compareData(idx, dataSeq(idx))
+          step(1)
+        }
+
+        step(1)
+        idle(10)
       }
     } should be (true)
   }
