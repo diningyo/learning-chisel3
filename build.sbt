@@ -107,7 +107,7 @@ lazy val mulDiv = (project in file("subprj/mul-div")).
 lazy val testCtrl = (project in file("subprj/test-ctrl")).
   settings(commonSettings: _*)
 
-lazy val grammerCheck = (project in file("subprj/grammer-check")).
+lazy val bareAPICall = (project in file("subprj/bare-api-call")).
   settings(commonSettings: _*)
 
 lazy val utilQueue = (project in file("subprj/util-queue")).
