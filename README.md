@@ -196,7 +196,7 @@ runMain ElaborateMem2D
 
 モジュールのテストを作成していて出くわしたエラーに対しての確認用のプロジェクト。
 
-```scala
+```bash
 project bareAPICall
 runMain TestElaborateBeforeErrorMod
 runMain TestElaborateRegenerateErrorModFail
@@ -237,7 +237,7 @@ Chiselに含まれる`util.Queue`のオプションによる挙動の違いを�
 
 - [Chiselのutil.Queueの使い方の再確認 ](https://www.tech-diningyo.info/entry/2019/07/07/224321)
 
-```scala
+```bash
 project utilQueue
 test
 ```

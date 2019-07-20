@@ -70,9 +70,8 @@ lazy val commonSettings = Seq (
   javacOptions ++= javacOptionsVersion(scalaVersion.value),
   libraryDependencies ++= Seq("chisel3", "chisel-iotesters").map {
     dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep))
-  }),
-  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
-  }
+  },
+  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
 )
 
 lazy val chiselFlatSpec = (project in file("subprj/chisel-flat-spec")).
