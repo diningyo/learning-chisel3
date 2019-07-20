@@ -75,10 +75,10 @@ class NICDecoderTester extends BaseTester {
         for (dst <- 0 until defaultNumOfOutput) {
           val data = intToUnsignedBigInt(r.nextInt())
           sendData(dst, data)
+          compareData(dst, data)
 
           step(1)
           poke(in.valid, false)
-          compareData(dst, data)
 
           step(1)
 
@@ -137,10 +137,10 @@ class NICDecoderTester extends BaseTester {
         for (dst <- 0 until defaultNumOfOutput) {
           val data = intToUnsignedBigInt(r.nextInt())
           sendData(dst, data)
-          compareData(dst, data)
 
           step(1)
           poke(in.valid, false)
+          compareData(dst, data)
 
           step(1)
 

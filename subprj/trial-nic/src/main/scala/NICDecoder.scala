@@ -21,7 +21,7 @@ class NICDecoderIO(numOfOutput: Int) extends Bundle {
 class NICDecoder(numOfOutput: Int, sliceEn: Boolean) extends Module {
   val io = IO(new NICDecoderIO(numOfOutput))
 
-  val q = Queue(io.in, 1, sliceEn, sliceEn)
+  val q = Queue(io.in, 1, !sliceEn, !sliceEn)
 
   val chosen_readies = Seq.fill(numOfOutput)((Wire(Bool()), Wire(Bool())))
 
