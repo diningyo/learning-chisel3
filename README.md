@@ -34,7 +34,7 @@
 
 ```scala
 project chiselFlatSpec
-test"
+test
 ```
 
 ### chiselFlasSpecWithArgs
@@ -192,3 +192,22 @@ object TestElaborateRegenerateErrorModFail extends App {
   }
 }
 ```
+
+### utilQueue
+
+Chiselに含まれる`util.Queue`のオプションによる挙動の違いを調査した際のもので、以下のブログ記事の確認コード
+
+- [Chiselのutil.Queueの使い方の再確認 ](https://www.tech-diningyo.info/entry/2019/07/07/224321)
+
+```scala
+project utilQueue
+test
+```
+
+上記のテストコマンドを実行すると"test_run_dir"に以下の４つのディレクトリが生成され、ダンプした波形が確認可能
+
+1. QueuePipeOffFlowOff
+1. QueuePipeOffFlowOn
+1. QueuePipeOnFlowOff
+1. QueuePipeOnFlowOn
+
