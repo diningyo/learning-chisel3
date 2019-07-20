@@ -25,10 +25,12 @@
 - [bundleAlias](#bundleAlias)
 - [uintAndSIntShift](#uintAndSIntShift)
 - [parallelTestExecution](#parallelTestExecution)
-- [loadChiselMem](#loadChiselMem) 
-- [memND](#memND) 
+- [loadChiselMem](#loadChiselMem)
+- [memND](#memND)
 - [loadChiselMem](#loadChiselMem)
 - [bareAPICall](#bareAPICall)
+- [utilQueue](#utilQueue)
+- [chiselName](#chiselName)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -154,7 +156,7 @@ Chiselのメモリにファイルから読み込んだデータを設定する�
 
 ```bash
 project loadChiselMem
-testOnly MemoryTester 
+testOnly MemoryTester
 ```
 
 ### memND
@@ -184,11 +186,11 @@ runMain ElaborateMem2D
   - Mem2DWithWrite.anno.json
   - Mem2DWithWrite.fir
   - Mem2DWithWrite.v
-  
+
 #### テスト実行コマンド
- 
-以下のコマンドでテストが実行される。 
- 
+
+以下のコマンドでテストが実行される。
+
 ```bash
  testOnly Mem2DTester
 ```
@@ -233,7 +235,8 @@ object TestElaborateRegenerateErrorModFail extends App {
 
 ### utilQueue
 
-Chiselに含まれる`util.Queue`のオプションによる挙動の違いを調査した際のもので、以下のブログ記事の確認コード
+Chiselに含まれる`util.Queue`のオプションによる挙動の違いを調査した際のもので、以下のブログ記事の確認コード。
+調査したオプションはQueueの第３/第４になっている`pipe/flow`。
 
 - [Chiselのutil.Queueの使い方の再確認 ](https://www.tech-diningyo.info/entry/2019/07/07/224321)
 
@@ -242,10 +245,59 @@ project utilQueue
 test
 ```
 
-上記のテストコマンドを実行すると"test_run_dir"に以下の４つのディレクトリが生成され、ダンプした波形が確認可能
+上記のテストコマンドを実行すると"test_run_dir"に以下の４つのディレクトリが生成され、ダンプした波形が確認可能。
 
 1. QueuePipeOffFlowOff
 1. QueuePipeOffFlowOn
 1. QueuePipeOnFlowOff
 1. QueuePipeOnFlowOn
+
+### chiselName
+
+Chiselに入っているアノテーション`@chiselName`の効果を確認するためのプロジェクト。
+対応するのは以下の記事。
+
+- [Chiselの便利なアノテーション@chiselNameを試してみた ](https://www.tech-diningyo.info/entry/2019/07/08/233526)
+
+```scala
+@chiselName
+class TestMod extends Module {
+  val io = IO(new Bundle {
+    val a = Input(Bool())
+    val b = Input(Bool())
+    val c = Output(UInt(4.W))
+  })
+  when (io.a) {
+    val innerReg = RegInit(5.U(4.W)) // こういうブロック内の変数に名前がつけられる機能
+    innerReg := innerReg + 1.U
+    when (io.b) {
+      val innerRegB = innerReg + 1.U
+      innerReg := innerRegB
+    }
+    io.c := innerReg
+  } .otherwise {
+    io.c := 10.U
+  }
+}
+
+object Elaborate extends App {
+  Driver.execute(Array(
+    "-tn=TestMod",
+    "-td=rtl/chiselName"
+  ),
+  () => new TestMod)
+}
+```
+
+- エラボレートの実行
+```bash
+project chiselName
+runMain Elaborate
+```
+
+上記を実行すると
+
+- rtl/chiselName
+
+にFIRRTL/RTLが生成されます。
 
