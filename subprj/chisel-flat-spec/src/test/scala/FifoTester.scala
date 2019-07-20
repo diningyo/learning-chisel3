@@ -76,7 +76,7 @@ class FifoTester extends ChiselFlatSpec {
 
   val args = Array(
     "--generate-vcd-output", "on",
-    //"--backend-name", "verilator",
+    "--backend-name", "verilator",
     "--target-dir", "test_run_dir/fifo_test",
     "--top-name", "fifo_dtm"
     //"--is-verbose"
