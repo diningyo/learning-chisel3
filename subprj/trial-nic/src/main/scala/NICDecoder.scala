@@ -11,19 +11,22 @@ class NICDecoderIO(numOfOutput: Int) extends Bundle {
   val in = Flipped(Decoupled(new NICBaseData(numOfOutput)))
   val out = Vec(numOfOutput, Decoupled(new NICBaseData(numOfOutput)))
 
-  override def cloneType: this.type = new NICDecoderIO(numOfOutput).asInstanceOf[this.type]
+  override def cloneType: this.type =
+    new NICDecoderIO(numOfOutput).asInstanceOf[this.type]
 }
 
 /**
   * NICDecoder
   * @param numOfOutput 出力ポートの数
   */
-class NICDecoder(numOfOutput: Int, sliceEn: Boolean) extends Module {
+class NICDecoder(numOfOutput: Int, sliceEn: Boolean)
+  extends Module {
   val io = IO(new NICDecoderIO(numOfOutput))
 
   val q = Queue(io.in, 1, !sliceEn, !sliceEn)
 
-  val chosen_readies = Seq.fill(numOfOutput)((Wire(Bool()), Wire(Bool())))
+  val chosen_readies = Seq.fill(numOfOutput)(
+    (Wire(Bool()), Wire(Bool())))
 
   for ((out_port, idx) <- io.out.zipWithIndex) {
     // qの出力のdstがポートのインデックスと一致すれば選択された状態
