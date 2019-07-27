@@ -31,6 +31,7 @@
 - [bareAPICall](#bareAPICall)
 - [utilQueue](#utilQueue)
 - [chiselName](#chiselName)
+- [trialNIC](#trialNIC)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -301,3 +302,42 @@ runMain Elaborate
 
 にFIRRTL/RTLが生成されます。
 
+### trialNIC
+
+Chiselのパラメタライズのお試し実装として作った簡単なNIC用のプロジェクト。
+以下のブログ記事で紹介したもの。
+記事の方では割愛したテストも含んでいます。
+
+- [Chiselで作るNIC - （１）- 仕様について](https://www.tech-diningyo.info/entry/2019/07/21/212610)
+- [Chiselで作るNIC - （2）- Decoder](https://www.tech-diningyo.info/entry/2019/07/21/214526)
+- [Chiselで作るNIC - （3）- Arbiter](https://www.tech-diningyo.info/entry/2019/07/23/224045)
+- [Chiselで作るNIC - （4）- トップモジュール](https://www.tech-diningyo.info/entry/2019/07/24/232828)
+
+sbtのコマンドラインから以下を実行してプロジェクトを切り替えてください。
+
+```
+project trialNIC
+```
+
+#### テストの実行
+
+tiralNICプロジェクトを選択した状態で、以下で各モジュール毎のテストを実行することが可能です。
+各テストの内容についてはテスト用クラスの実装をご覧ください。
+
+- NICDecoder
+
+```
+testOnly testOnly NICArbiterTester
+```
+
+- NICArbiter
+
+```
+testOnly NICArbiterTester
+```
+
+- NICTop
+
+```
+testOnly NICTopTester
+```
