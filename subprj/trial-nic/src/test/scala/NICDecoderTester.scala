@@ -64,7 +64,8 @@ class NICDecoderTester extends BaseTester {
   val testArgs = baseArgs :+ "-tn=NICDecoder"
   val defaultNumOfOutput = 3
 
-  it should "io.in.validをHighにした時のio.dstに従って出力ポートが選択される" in {
+  it should "io.in.validをHighにした時のio.dstに従って" +
+    "出力ポートが選択される" in {
     iotesters.Driver.execute(
       testArgs :+ "-td=test_run_dir/NICDecoder-000",
       () => new NICDecoder(defaultNumOfOutput, false)) {
@@ -88,7 +89,8 @@ class NICDecoderTester extends BaseTester {
     } should be (true)
   }
 
-  it should "選択した出力先のout(N).io.readyがLowになるとio.in.readyもLowになる" in {
+  it should "選択した出力先のout(N).io.readyがLowになると" +
+    "io.in.readyもLowになる" in {
     iotesters.Driver.execute(
       testArgs :+ s"-td=test_run_dir/NICDecoder-001",
       () => new NICDecoder(defaultNumOfOutput, false)) {
@@ -126,7 +128,8 @@ class NICDecoderTester extends BaseTester {
     } should be (true)
   }
 
-  it should "io.in.validをHighにした時のio.dstに従って出力ポートが選択され、1cycle後にvalidがHighになる" in {
+  it should "io.in.validをHighにした時のio.dstに従って出力ポート" +
+    "が選択され、1cycle後にvalidがHighになる" in {
     iotesters.Driver.execute(
       testArgs :+ "-td=test_run_dir/NICDecoder-100",
       () => new NICDecoder(defaultNumOfOutput, true)) {
@@ -150,7 +153,8 @@ class NICDecoderTester extends BaseTester {
     } should be (true)
   }
 
-  it should "選択した出力先のout(N).io.readyがLowになるとio.in.readyが1cycle後にLowになる" in {
+  it should "選択した出力先のout(N).io.readyがLowになると" +
+    "io.in.readyが1cycle後にLowになる" in {
     iotesters.Driver.execute(
       testArgs :+ s"-td=test_run_dir/NICDecoder-101",
       () => new NICDecoder(defaultNumOfOutput, true)) {

@@ -11,7 +11,8 @@ class NICBaseData(numOfPort: Int) extends Bundle {
   val dst = UInt(log2Ceil(numOfPort).W)
   val data = UInt(32.W)
 
-  override def cloneType: this.type = new NICBaseData(numOfPort).asInstanceOf[this.type]
+  override def cloneType: this.type =
+    new NICBaseData(numOfPort).asInstanceOf[this.type]
 }
 
 /**
@@ -41,8 +42,10 @@ class NICIO(val p: NICParams) extends Bundle {
 
   val numOfInput = p.inParams.length
   val numOfOutput = p.outParams.length
-  val in = Vec(numOfInput, Flipped(Decoupled(new NICBaseData(numOfInput))))
-  val out = Vec(numOfOutput, Decoupled(new NICBaseData(numOfOutput)))
+  val in = Vec(numOfInput,
+    Flipped(Decoupled(new NICBaseData(numOfInput))))
+  val out = Vec(numOfOutput,
+    Decoupled(new NICBaseData(numOfOutput)))
 
   override def cloneType: this.type = new NICIO(p).asInstanceOf[this.type]
 }
@@ -54,8 +57,10 @@ class NICIO(val p: NICParams) extends Bundle {
 class NICTop(p: NICParams) extends Module {
   val io = IO(new NICIO(p))
 
-  val decs = p.inParams.map(dp => Module(new NICDecoder(p.numOfOutput, dp.sliceEn)))
-  val arbs = p.outParams.map(ap => Module(new NICArbiter(p.numOfInput, ap.sliceEn)))
+  val decs = p.inParams.map(
+    dp => Module(new NICDecoder(p.numOfOutput, dp.sliceEn)))
+  val arbs = p.outParams.map(
+    ap => Module(new NICArbiter(p.numOfInput, ap.sliceEn)))
 
   // io.in(n) <-> NICDecoder(n).io.in
   for ((in_port, dec) <- io.in zip decs) {
