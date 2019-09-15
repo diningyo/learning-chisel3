@@ -32,6 +32,7 @@
 - [utilQueue](#utilQueue)
 - [chiselName](#chiselName)
 - [trialNIC](#trialNIC)
+- [MultiIOModule](#multiIOModule)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -195,6 +196,7 @@ runMain ElaborateMem2D
 ```bash
  testOnly Mem2DTester
 ```
+
 ### bareAPICall
 
 モジュールのテストを作成していて出くわしたエラーに対しての確認用のプロジェクト。
@@ -340,4 +342,54 @@ testOnly NICArbiterTester
 
 ```
 testOnly NICTopTester
+```
+
+### MultiIOModule
+
+`MultiIOModule`を使ったデバッグポート作成に関するサンプルプロジェクト
+
+以下のブログ記事の内容
+
+[MultiIOModuleを使ったデバッグ用ポートについての作成](https://www.tech-diningyo.info/entry/2019/09/15/214611)
+
+```bash
+project multiIOModule
+runMain Test
+```
+
+コードから抜粋して書くと、以下のようなコードでデバッグ用のポートを`dbg_`という接頭辞で作れる。
+
+```scala
+/**
+  * デバッグポート用のBundle
+  * @param bits
+  */
+class DebugIO(bits: Int) extends Bundle {
+  val count = Output(UInt(bits.W))
+  override def cloneType: this.type = new DebugIO(bits).asInstanceOf[this.type]
+}
+
+/**
+  * MultiIOModule使ったデバッグポート作成のサンプル
+  * @param debug
+  */
+class DebugWithMultiIOModule(debug: Boolean) extends MultiIOModule {
+
+  val bits = log2Ceil(4)
+
+  val io = IO(new Bundle {
+    val in = Flipped(new SomeDataIO)
+    val out = new SomeDataIO
+  })
+  val q = Module(new Queue(chiselTypeOf(io.in.bits), 4))
+
+  q.io.enq <> io.in
+  io.out <> q.io.deq
+
+  // debug
+  val dbgBits = if (debug) 32 else 0
+  val dbg = IO(new DebugIO(dbgBits))
+
+  dbg.count := q.io.count
+}
 ```
