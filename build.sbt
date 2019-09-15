@@ -41,8 +41,9 @@ resolvers ++= Seq(
 
 // Provide a managed dependency on X if -DXVersion="" is supplied on the command line.
 val defaultVersions = Map(
-  "chisel3" -> "3.1.+",
-  "chisel-iotesters" -> "[1.2.5,1.3-SNAPSHOT["
+  "chisel3" -> "3.2-SNAPSHOT",
+  "chisel-iotesters" -> "1.3-SNAPSHOT",
+  "treadle" -> "1.1-SNAPSHOT"
   )
 
 libraryDependencies ++= Seq("chisel3","chisel-iotesters").map {
@@ -71,6 +72,7 @@ lazy val commonSettings = Seq (
   libraryDependencies ++= Seq("chisel3", "chisel-iotesters").map {
     dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep))
   },
+  updateOptions := updateOptions.value.withLatestSnapshots(false),
   addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
 )
 
@@ -123,4 +125,16 @@ lazy val chiselName = (project in file("subprj/chisel-name")).
   settings(commonSettings: _*)
 
 lazy val trialNIC = (project in file("subprj/trial-nic")).
+  settings(commonSettings: _*)
+
+lazy val bugSurvey = (project in file("subprj/bug-survey")).
+  settings(commonSettings: _*)
+
+lazy val arbiterTest = (project in file("subprj/arbiter-test")).
+  settings(commonSettings: _*)
+
+lazy val simWDT = (project in file("subprj/sim-wdt")).
+  settings(commonSettings: _*)
+
+lazy val multiIOModule = (project in file("subprj/multi-io-module")).
   settings(commonSettings: _*)
