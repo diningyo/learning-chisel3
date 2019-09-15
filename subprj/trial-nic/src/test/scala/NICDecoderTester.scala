@@ -131,7 +131,7 @@ class NICDecoderTester extends BaseTester {
   it should "io.in.validをHighにした時のio.dstに従って出力ポート" +
     "が選択され、1cycle後にvalidがHighになる" in {
     iotesters.Driver.execute(
-      testArgs :+ "-td=test_run_dir/NICDecoder-100",
+      testArgs :+ "-td=test_run_dir/NICDecoder-100" :+ "--is-verbose",
       () => new NICDecoder(defaultNumOfOutput, true)) {
       c => new NICDecoderUnitTester(c) {
 
@@ -140,6 +140,7 @@ class NICDecoderTester extends BaseTester {
         for (dst <- 0 until defaultNumOfOutput) {
           val data = intToUnsignedBigInt(r.nextInt())
           sendData(dst, data)
+          println(f"[$t] in.bits = 0x${peek(in.bits.data)}%08x")
 
           step(1)
           poke(in.valid, false)

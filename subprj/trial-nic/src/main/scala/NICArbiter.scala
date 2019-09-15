@@ -30,6 +30,7 @@ class NICArbiter(numOfInput: Int, sliceEn: Boolean)
   val slice = Queue(arb.io.out, 1, !sliceEn, !sliceEn)
 
   for ((in_port, arb_in) <- io.in zip arb.io.in) {
+    printf("inport.bits.data = %x\n", in_port.bits.data)
     arb_in <> in_port
   }
 
