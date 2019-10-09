@@ -138,3 +138,6 @@ lazy val simWDT = (project in file("subprj/sim-wdt")).
 
 lazy val multiIOModule = (project in file("subprj/multi-io-module")).
   settings(commonSettings: _*)
+
+lazy val blackboxCheck = (project in file("subprj/blackbox-check")).
+  settings(commonSettings: _*)
