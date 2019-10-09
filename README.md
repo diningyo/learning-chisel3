@@ -35,6 +35,7 @@
 - [trialNIC](#trialNIC)
 - [MultiIOModule](#multiIOModule)
 - [blackboxCheck](#blackboxCheck)
+- [arbiterTest](#arbiterTest)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -407,4 +408,38 @@ class DebugWithMultiIOModule(debug: Boolean) extends MultiIOModule {
 ```bash
 project blackboxCheck
 test
+```
+
+### arbiterTest
+
+RRArbiterでReady-Validのハンドシェイクのテストコードをどう書けばいいか確認した際のコード。
+
+以下のブログ記事の内容
+
+[ChiselのArbiterのvalid/readyの調停テストコードが上手く作れなかった話](https://www.tech-diningyo.info/entry/2019/07/28/122222)
+
+```bash
+project arbiterTest
+test
+```
+
+実行すると以下のように１つ目のテストがFAILします。これは意図通りに動かないというダメだった例を残してあるものです。
+
+```scala
+[info] ArbiterTester:
+[info] RRArbiter
+[info] - should 以下のテストを実行するとin(2)/in(3)のvalidが同時にLOWに落ちる *** FAILED ***
+[info]   false was not true (ArbiterTester.scala:41)
+[info] - should in(N).readyを取得してからvalidを制御するとうまくいく
+[info] ScalaTest
+[info] Run completed in 2 seconds, 41 milliseconds.
+[info] Total number of tests run: 2
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed: Total 2, Failed 1, Errors 0, Passed 1
+[error] Failed tests:
+[error] 	ArbiterTester
+[error] (Test / test) sbt.TestsFailedException: Tests unsuccessful
+[error] Total time: 8 s, completed 2019/10/09 23:50:45
 ```
