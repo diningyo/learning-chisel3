@@ -5,10 +5,11 @@
 
 ## 必要なもの
 
-以下の２つが動く環境
+以下の３つが動く環境
 
 - Scala
 - sbt - 1.2.7
+- verilator - 手元のバージョンは4.012
 
 ## 実行の方法
 
@@ -33,6 +34,7 @@
 - [chiselName](#chiselName)
 - [trialNIC](#trialNIC)
 - [MultiIOModule](#multiIOModule)
+- [blackboxCheck](#blackboxCheck)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -392,4 +394,17 @@ class DebugWithMultiIOModule(debug: Boolean) extends MultiIOModule {
 
   dbg.count := q.io.count
 }
+```
+
+### blackboxCheck
+
+`BlackBox`でVerilog-HDLの階層化されたモジュールを読み込む方法を確認したプロジェクト
+
+以下のブログ記事の内容
+
+[ChiselのBlackboxで複数のファイルから構成されるVerilog-HDLのモジュールを読み込む](https://www.tech-diningyo.info/entry/2019/10/07/235812)
+
+```bash
+project blackboxCheck
+test
 ```
