@@ -480,6 +480,10 @@ class SimDTM(limit: Int, abortEn: Boolean = true) extends BaseSimDTM(limit, abor
 }
 ```
 
+ブログの記事は以下。
+
+[Chiselのシミュレーションを所定のサイクルで終了する方法](https://www.tech-diningyo.info/entry/2019/08/01/233811)
+
 #### 実行方法
 
 ```bash
