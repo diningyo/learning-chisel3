@@ -36,6 +36,7 @@
 - [MultiIOModule](#multiIOModule)
 - [blackboxCheck](#blackboxCheck)
 - [arbiterTest](#arbiterTest)
+- [simWDT](#simWDT)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -442,4 +443,81 @@ test
 [error] 	ArbiterTester
 [error] (Test / test) sbt.TestsFailedException: Tests unsuccessful
 [error] Total time: 8 s, completed 2019/10/09 23:50:45
+```
+
+### simWDT
+
+Chiselのテスト環境を使用したテストを実行する際に、テストベンチのモジュール側にタイマーを入れてシミュレーションをタイムアウトする仕組みの確認コード。
+
+#### 概要
+
+以下のような感じでタイマーをインスタンスした基底クラスを用意しておき、実際のテストベンチはこの基底クラスを継承して作成する。
+
+```scala
+/**
+  * シミュレーションのトップモジュール
+  * @param limit シミュレーションのMAXサイクル数
+  * @param abortEn timeout時にassertでシミュレーションを終了するかどうか
+  */
+abstract class BaseSimDTM(limit: Int, abortEn: Boolean = true) extends Module {
+  val io: BaseSimDTMIO
+  val wdt = Module(new WDT(limit, abortEn))
+
+  def connect(finish: Bool): Unit = {
+    io.finish := finish
+    io.timeout := wdt.io.timeout
+  }
+}
+
+/**
+  * テスト用のシミュレーショントップモジュール
+  * @param limit シミュレーションのMAXサイクル数
+  * @param abortEn timeout時にassertでシミュレーションを終了するかどうか
+  */
+class SimDTM(limit: Int, abortEn: Boolean = true) extends BaseSimDTM(limit, abortEn) {
+  val io = IO(new Bundle with BaseSimDTMIO)
+
+  connect(false.B)
+}
+```
+
+#### 実行方法
+
+```bash
+project simWDT
+test
+```
+
+- 実行結果
+    - 以下のように時間が来ると`assert`が発火してシミュレーションが終了する。
+
+```scala
+[info] [0.002] Elaborating design...
+[info] [0.132] Done elaborating.
+Total FIRRTL Compile Time: 440.7 ms
+file loaded in 0.075331792 seconds, 24 symbols, 20 statements
+[info] [0.001] SEED 1570717992611
+[info] [0.002] step = 0
+[info] [0.003] step = 1
+[info] [0.003] step = 2
+[info] [0.004] step = 3
+[info] [0.004] step = 4
+[info] [0.005] step = 5
+[info] [0.005] step = 6
+[info] [0.005] step = 7
+[info] [0.006] step = 8
+[info] [0.006] step = 9
+[info] [0.006] step = 10
+[info] [0.007] step = 11
+[info] [0.007] step = 12
+[info] [0.008] step = 13
+[info] [0.008] step = 14
+[info] [0.009] step = 15
+[info] [0.009] step = 16
+[info] [0.010] step = 17
+[info] [0.011] step = 18
+[info] [0.011] step = 19
+Assertion failed: WDT is expired!!
+    at BaseSimDTM.scala:25 assert(!timeout, "WDT is expired!!")
+treadle.executable.StopException: Failure Stop: result 1
 ```
