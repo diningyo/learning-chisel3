@@ -28,7 +28,6 @@
 - [parallelTestExecution](#parallelTestExecution)
 - [loadChiselMem](#loadChiselMem)
 - [memND](#memND)
-- [loadChiselMem](#loadChiselMem)
 - [bareAPICall](#bareAPICall)
 - [utilQueue](#utilQueue)
 - [chiselName](#chiselName)
