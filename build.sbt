@@ -41,9 +41,9 @@ resolvers ++= Seq(
 
 // Provide a managed dependency on X if -DXVersion="" is supplied on the command line.
 val defaultVersions = Map(
-  "chisel3" -> "3.2-SNAPSHOT",
-  "chisel-iotesters" -> "1.3-SNAPSHOT",
-  "treadle" -> "1.1-SNAPSHOT"
+  "chisel3" -> "3.2.0",
+  "chisel-iotesters" -> "1.3.0",
+  "treadle" -> "1.1.0"
   )
 
 libraryDependencies ++= Seq("chisel3","chisel-iotesters").map {
@@ -140,4 +140,7 @@ lazy val multiIOModule = (project in file("subprj/multi-io-module")).
   settings(commonSettings: _*)
 
 lazy val blackboxCheck = (project in file("subprj/blackbox-check")).
+  settings(commonSettings: _*)
+
+lazy val chisel320 = (project in file("subprj/chisel-3.2.0")).
   settings(commonSettings: _*)
