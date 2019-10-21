@@ -573,7 +573,7 @@ runMain ElaborateMuxDontCare
 
 #### BundleLiterals
 
-- subprj/chisel-3.2.0/src/main/TrialBundleLiterals.scala
+- [subprj/chisel-3.2.0/src/main/TrialBundleLiterals.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialBundleLiterals.scala)
 
 ```bash
 runMain ElaborateBundleLiterals
@@ -587,8 +587,8 @@ runMain ElaborateBundleLiterals
 
 以下がテスト用のコード
 
-- subprj/chisel-3.2.0/src/main/MemVerilogStyle.scala
-- subprj/chisel-3.2.0/src/test/MemVerilogStyleTester.scala
+- [subprj/chisel-3.2.0/src/main/MemVerilogStyle.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/MemVerilogStyle.scala)
+- [subprj/chisel-3.2.0/src/test/MemVerilogStyleTester.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/test/scala/MemVerilogStyleTester.scala)
 
 ```bash
 testOnly MemVerilogStyleTester
@@ -613,7 +613,7 @@ STARTING test_run_dir/chisel-3.2.0/MemVerilogStyle/MemVerilogStyleTester45362859
 
 `MixedVec`の使い方の確認
 
-- subprj/chisel-3.2.0/src/main/TrialMixedVec.scala
+- [subprj/chisel-3.2.0/src/main/TrialMixedVec.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialMixedVec.scala)
 
 ```bash
 runMain ElaborateMixedVec
@@ -627,7 +627,7 @@ runMain ElaborateMixedVec
 
 "Strong Enums"と紹介されている`ChiselEnum`の確認コード
 
-- subprj/chisel-3.2.0/src/main/TrialStrongEnums.scala
+- [subprj/chisel-3.2.0/src/main/TrialStrongEnums.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialStrongEnums.scala)
 
 ```bash
 runMain ElaborateStrongEnums
@@ -661,7 +661,7 @@ testOnly TrialHasBlackBoxPathTester
 
 非同期リセットの確認コード
 
-- subprj/chisel-3.2.0/src/main/TrialAsyncReset.scala
+- [subprj/chisel-3.2.0/src/main/TrialAsyncReset.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialAsyncReset.scala)
 
 ```bash
 runMain ElaborateTrialAsyncReset
