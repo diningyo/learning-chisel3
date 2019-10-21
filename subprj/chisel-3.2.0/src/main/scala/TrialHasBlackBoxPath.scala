@@ -2,7 +2,9 @@
 import chisel3._
 import chisel3.util._
 
-
+/**
+ * addPathの使い方の確認
+ */
 class VerilogA extends BlackBox with HasBlackBoxPath {
   val io = IO(new Bundle {
     val a = Input(Bool())
@@ -12,16 +14,22 @@ class VerilogA extends BlackBox with HasBlackBoxPath {
   addPath("subprj/chisel-3.2.0/src/main/resources/vsrc/VerilogA.sv")
 }
 
+/**
+ * addPathの使い方の確認
+ */
 class VerilogB extends BlackBox with HasBlackBoxPath {
   val io = IO(new Bundle {
     val b = Input(Bool())
     val bb = Output(Bool())
   })
 
-  addPath("subprj/chisel-3.2.0/src/main/resources/vsrc/VerilogB.sv")
+  // resources以外の場所でも読み込める
+  addPath("subprj/chisel-3.2.0/src/main/vsrc/VerilogB.sv")
 }
 
-
+/**
+ * HasBlackBoxPathの確認用トップモジュール
+ */
 class TrialHasBlackBoxPath extends Module {
   val io = IO(new Bundle {
     val a = Input(Bool())
@@ -38,8 +46,4 @@ class TrialHasBlackBoxPath extends Module {
 
   m_bbb.io.b := io.b
   io.bb := m_bbb.io.bb
-
-  val a: Bool = 0.B
-  val b: Bool = 1.B
-  val c: Bool = 2.B
 }

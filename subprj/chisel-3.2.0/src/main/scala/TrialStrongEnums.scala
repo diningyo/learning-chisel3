@@ -3,9 +3,10 @@ import chisel3._
 import chisel3.experimental.ChiselEnum
 import chisel3.util._
 
-
-
-class StrongEnums extends Module {
+/**
+ * ChiselEnumの確認コード
+ */
+class TrialStrongEnums extends Module {
   val io = IO(new Bundle {
     val wren = Input(Bool())
     val rden = Input(Bool())
@@ -13,7 +14,7 @@ class StrongEnums extends Module {
   })
 
   /**
-   * これがStrong Enums
+   * これがStrong Enumsと呼ばれているChiselEnum
    */
   object State extends ChiselEnum {
     val sIdle, sWrite = Value
@@ -43,6 +44,12 @@ class StrongEnums extends Module {
   io.rddata := Mux(r_state === State.sRead, 100.U, 0.U)
 }
 
+/**
+ * RTLの生成
+ */
 object ElaborateStrongEnums extends App {
-  Driver.execute(args, () => new StrongEnums)
+  Driver.execute(
+    Array(
+      "-td=rtl/chisel-3.2.0/TrialStrongEnums"
+    ), () => new TrialStrongEnums)
 }

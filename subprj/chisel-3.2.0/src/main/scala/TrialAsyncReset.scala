@@ -3,6 +3,9 @@ import chisel3._
 import chisel3.internal.naming.chiselName
 import chisel3.util._
 
+/**
+ * 非同期リセットの使い方の確認コード
+ */
 @chiselName
 class TrialAsyncReset extends Module {
   val io = IO(new Bundle {
@@ -31,6 +34,12 @@ class TrialAsyncReset extends Module {
   io.out_a := r_a
 }
 
+/**
+ * RTLの生成
+ */
 object ElaborateTrialAsyncReset extends App {
-  Driver.execute(args, () => new TrialAsyncReset)
+  Driver.execute(
+    Array(
+      "-td=rtl/chisel-3.2.0/TrialAsyncReset"
+    ), () => new TrialAsyncReset)
 }

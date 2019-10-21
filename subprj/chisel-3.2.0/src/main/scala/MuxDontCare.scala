@@ -2,6 +2,9 @@
 import chisel3._
 import chisel3.util._
 
+/**
+ * MuxにDontCareが指定可能になった。
+ */
 class MuxDontCare extends Module {
   val io = IO(new Bundle {
     val sel = Input(Bool())
@@ -12,6 +15,9 @@ class MuxDontCare extends Module {
   io.out := Mux(io.sel, io.in, DontCare)
 }
 
+/**
+ * MuxCaseも同様
+ */
 class MuxCaseDontCare extends Module {
   val io = IO(new Bundle {
     val sel = Input(UInt(2.W))
@@ -26,7 +32,15 @@ class MuxCaseDontCare extends Module {
   ))
 }
 
+/**
+ * RTLの生成
+ */
 object ElaborateMuxDontCare extends App {
-  Driver.execute(args, () => new MuxDontCare)
-  Driver.execute(args, () => new MuxCaseDontCare)
+  Driver.execute(Array(
+    "-td=rtl/chisel-3.2.0/MuxDontCare"
+  ),
+    () => new MuxDontCare)
+  Driver.execute(Array(
+    "-td=rtl/chisel-3.2.0/MuxCaseDontCare"
+  ), () => new MuxCaseDontCare)
 }
