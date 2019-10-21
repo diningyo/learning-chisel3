@@ -36,6 +36,7 @@
 - [blackboxCheck](#blackboxCheck)
 - [arbiterTest](#arbiterTest)
 - [simWDT](#simWDT)
+- [chisel320](#chisel320)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -494,7 +495,7 @@ test
 - 実行結果
     - 以下のように時間が来ると`assert`が発火してシミュレーションが終了する。
 
-```scala
+```bash
 [info] [0.002] Elaborating design...
 [info] [0.132] Done elaborating.
 Total FIRRTL Compile Time: 440.7 ms
@@ -524,3 +525,131 @@ Assertion failed: WDT is expired!!
     at BaseSimDTM.scala:25 assert(!timeout, "WDT is expired!!")
 treadle.executable.StopException: Failure Stop: result 1
 ```
+
+### chisel320
+
+Chisel 3.2.0で変更のあった部分で気になる部分を確認した際のコード。
+以下の機能の確認コードが含まれる。
+
+- [Mux使用時のDontCare指定](#Mux使用時のDontCare指定)
+- [BundleLiterals](#BundleLiterals)
+- [Verilog形式のメモリ読み込みのサポート](#Verilog形式のメモリ読み込み)
+- [MixedVecのサポート](#MixedVec)
+- [Strong enumsのサポート](#Strongenumsのサポート)
+- [HasBlackBoxPathの追加](#HasBlackBoxPath)
+- [非同期リセットのサポート](#AsyncReset)
+
+- プロジェクトの切り替え
+
+```bash
+project chisel320
+```
+
+#### Mux使用時のDontCare指定
+
+```bash
+runMain ElaborateMuxDontCare
+```
+
+正常にエラボレートが終了し以下の2つのRTLが生成される。
+
+- rtl/chisel-3.2.0/MuxDontCare/MuxDontCare.v
+- rtl/chisel-3.2.0/MuxCaseDontCare/MuxCaseDontCare.v
+
+#### BundleLiterals
+
+- subprj/chisel-3.2.0/src/main/TrialBundleLiterals.scala
+
+```bash
+runMain ElaborateBundleLiterals
+```
+
+以下のRTLが生成される。
+
+- rtl/chisel-3.2.0/TrialBundleLiterals/TrialBundleLiterals.v
+
+#### Verilog形式のメモリ読み込みのサポート
+
+以下がテスト用のコード
+
+- subprj/chisel-3.2.0/src/main/MemVerilogStyle.scala
+- subprj/chisel-3.2.0/src/test/MemVerilogStyleTester.scala
+
+```bash
+testOnly MemVerilogStyleTester
+```
+
+テスト実行結果は以下のようになる。
+
+```bash
+STARTING test_run_dir/chisel-3.2.0/MemVerilogStyle/MemVerilogStyleTester453628597/VMemVerilogStyle
+[info] [0.002] SEED 1571625549898
+[info] [0.011] c.io.rddata = 0x00000000
+[info] [0.014] c.io.rddata = 0x00000001 // @によるアドレス指定で"1"だけずれて配置
+[info] [0.015] c.io.rddata = 0x00000002
+[info] [0.015] c.io.rddata = 0x00000000
+[info] [0.017] c.io.rddata = 0x00000000
+[info] [0.018] c.io.rddata = 0x00000000
+[info] [0.019] c.io.rddata = 0x00000000
+[info] [0.020] c.io.rddata = 0x00000000
+```
+
+#### MixedVec
+
+`MixedVec`の使い方の確認
+
+- subprj/chisel-3.2.0/src/main/TrialMixedVec.scala
+
+```bash
+runMain ElaborateMixedVec
+```
+
+以下のRTLが生成される
+
+- rtl/chisel-3.2.0/BundleLiterals/TrialMixedVec.v
+
+#### Strong enumsのサポート
+
+"Strong Enums"と紹介されている`ChiselEnum`の確認コード
+
+- subprj/chisel-3.2.0/src/main/TrialStrongEnums.scala
+
+```bash
+runMain ElaborateStrongEnums
+```
+
+- rtl/chisel-3.2.0/TrialStrongEnums/TrialStrongEnums.v
+
+#### HasBlackBoxPath
+
+`HasBlackBoxPath`に実装された`addPath`メソッドの動作確認のコード。`sbt`のディレクトリ構成で固定される`{main, test}/resources/`以外のパスにRTLを置いても読み込むことが可能。
+
+```bash
+testOnly TrialHasBlackBoxPathTester
+```
+
+シミュレーションの実行結果は以下のようにエラー無く終了する。
+
+```bash
+[info] TrialHasBlackBoxPathTester:
+[info] - should addPathで指定したパスのRTLが読み込める
+[info] ScalaTest
+[info] Run completed in 2 seconds, 804 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+[info] Passed: Total 1, Failed 0, Errors 0, Passed 1
+```
+
+#### AsyncReset
+
+非同期リセットの確認コード
+
+- subprj/chisel-3.2.0/src/main/TrialAsyncReset.scala
+
+```bash
+runMain ElaborateTrialAsyncReset
+```
+
+- rtl/chisel-3.2.0/TrialAsyncReset/TrialAsyncReset.v
