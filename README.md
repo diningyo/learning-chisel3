@@ -97,7 +97,7 @@ test
 
 例えば、わざとらしいけど以下のような`Bundle`を考えた時に`io.a.bb.ccc`にアクセスしやすくすることが出来るかを確かめる
 
-```scala
+```bash
 class A(hasOptPort: Boolean = true) extends Bundle {
   val a = new Bundle {
     val bb = new Bundle {
@@ -214,7 +214,7 @@ runMain TestElaborateRegenerateErrorModOK
 
 コードから抜粋して書くと、以下のようなコードを作るとエラボレートは通るがテスト時の`expect`でエラーになる。
 
-```scala
+```bash
 class RegenerateErrorMod extends Module {
   val io = IO(new Bundle {
     val out = Output(UInt(2.W))
@@ -266,7 +266,7 @@ Chiselに入っているアノテーション`@chiselName`の効果を確認す�
 
 - [Chiselの便利なアノテーション@chiselNameを試してみた ](https://www.tech-diningyo.info/entry/2019/07/08/233526)
 
-```scala
+```bash
 @chiselName
 class TestMod extends Module {
   val io = IO(new Bundle {
@@ -363,7 +363,7 @@ runMain Test
 
 コードから抜粋して書くと、以下のようなコードでデバッグ用のポートを`dbg_`という接頭辞で作れる。
 
-```scala
+```bash
 /**
   * デバッグポート用のBundle
   * @param bits
@@ -426,7 +426,7 @@ test
 
 実行すると以下のように１つ目のテストがFAILします。これは意図通りに動かないというダメだった例を残してあるものです。
 
-```scala
+```bash
 [info] ArbiterTester:
 [info] RRArbiter
 [info] - should 以下のテストを実行するとin(2)/in(3)のvalidが同時にLOWに落ちる *** FAILED ***
@@ -453,7 +453,7 @@ Chiselのテスト環境を使用したテストを実行する際に、テス�
 
 以下のような感じでタイマーをインスタンスした基底クラスを用意しておき、実際のテストベンチはこの基底クラスを継承して作成する。
 
-```scala
+```bash
 /**
   * シミュレーションのトップモジュール
   * @param limit シミュレーションのMAXサイクル数
