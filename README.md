@@ -97,7 +97,10 @@ test
 
 例えば、わざとらしいけど以下のような`Bundle`を考えた時に`io.a.bb.ccc`にアクセスしやすくすることが出来るかを確かめる
 
-```bash
+```scala
+import chisel3._
+import chisel3.util._
+
 class A(hasOptPort: Boolean = true) extends Bundle {
   val a = new Bundle {
     val bb = new Bundle {
@@ -214,7 +217,10 @@ runMain TestElaborateRegenerateErrorModOK
 
 コードから抜粋して書くと、以下のようなコードを作るとエラボレートは通るがテスト時の`expect`でエラーになる。
 
-```bash
+```scala
+import chisel3._
+import chisel3.util._
+
 class RegenerateErrorMod extends Module {
   val io = IO(new Bundle {
     val out = Output(UInt(2.W))
@@ -266,7 +272,10 @@ Chiselに入っているアノテーション`@chiselName`の効果を確認す�
 
 - [Chiselの便利なアノテーション@chiselNameを試してみた ](https://www.tech-diningyo.info/entry/2019/07/08/233526)
 
-```bash
+```scala
+import chisel3._
+import chisel3.util._
+
 @chiselName
 class TestMod extends Module {
   val io = IO(new Bundle {
@@ -363,7 +372,10 @@ runMain Test
 
 コードから抜粋して書くと、以下のようなコードでデバッグ用のポートを`dbg_`という接頭辞で作れる。
 
-```bash
+```scala
+import chisel3._
+import chisel3.util._
+
 /**
   * デバッグポート用のBundle
   * @param bits
@@ -453,7 +465,10 @@ Chiselのテスト環境を使用したテストを実行する際に、テス�
 
 以下のような感じでタイマーをインスタンスした基底クラスを用意しておき、実際のテストベンチはこの基底クラスを継承して作成する。
 
-```bash
+```scala
+import chisel3._
+import chisel3.util._
+
 /**
   * シミュレーションのトップモジュール
   * @param limit シミュレーションのMAXサイクル数
@@ -539,7 +554,7 @@ Chisel 3.2.0で変更のあった部分で気になる部分を確認した際�
 - [HasBlackBoxPathの追加](#HasBlackBoxPath)
 - [非同期リセットのサポート](#AsyncReset)
 
-- プロジェクトの切り替え
+#### プロジェクトの切り替え
 
 ```bash
 project chisel320
