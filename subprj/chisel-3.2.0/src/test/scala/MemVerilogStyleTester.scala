@@ -4,10 +4,11 @@ import chisel3.iotesters._
 
 class MemVerilogStyleTester extends ChiselFlatSpec {
 
-  it should "" in {
+  it should "Verilog-HDLのreadmemhスタイルのメモリファイルが読み込める" in {
     Driver.execute(
       Array(
-        "-tbn=verilator"
+        "-tbn=verilator",
+        "-td=test_run_dir/chisel-3.2.0/MemVerilogStyle"
       ), () => new MemVerilogStyle) {
       c => new PeekPokeTester(c) {
         reset()

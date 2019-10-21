@@ -4,10 +4,11 @@ import chisel3.iotesters._
 
 class TrialHasBlackBoxPathTester extends ChiselFlatSpec {
 
-  it should "" in {
+  it should "addPathで指定したパスのRTLが読み込める" in {
     Driver.execute(
       Array(
-        "-tbn=verilator"
+        "-tbn=verilator",
+        "-td=test_run_dir/chisel-3.2.0/TrialHasBlackBoxPath"
       ), () => new TrialHasBlackBoxPath) {
       c => new PeekPokeTester(c) {
         reset()
