@@ -144,3 +144,6 @@ lazy val blackboxCheck = (project in file("subprj/blackbox-check")).
 
 lazy val chisel320 = (project in file("subprj/chisel-3.2.0")).
   settings(commonSettings: _*)
+
+lazy val vecTest = (project in file("subprj/vec-test")).
+  settings(commonSettings: _*)
