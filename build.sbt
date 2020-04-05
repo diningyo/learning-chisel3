@@ -147,3 +147,6 @@ lazy val chisel320 = (project in file("subprj/chisel-3.2.0")).
 
 lazy val vecTest = (project in file("subprj/vec-test")).
   settings(commonSettings: _*)
+
+lazy val betterAsyncReset = (project in file("subprj/better-async-reset")).
+  settings(commonSettings: _*)
