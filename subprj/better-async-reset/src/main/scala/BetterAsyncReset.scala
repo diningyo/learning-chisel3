@@ -14,7 +14,7 @@ class SubModule extends Module {
   io.out := RegNext(io.in, false.B)
 }
 
-class BetterAsyncReset(useAsyncReset: Boolean = false) extends Module {
+class BetterAsyncReset extends Module {
   val io = IO(new Bundle {
     val in = Input(Bool())
     val out = Output(Bool())
@@ -28,7 +28,13 @@ class BetterAsyncReset(useAsyncReset: Boolean = false) extends Module {
 }
 
 object Elaborate extends App {
-  Driver.execute(Array("-td=rtl", "-tn=BetterAsyncReset_false"), () => new BetterAsyncReset with RequireAsyncReset (false))
+
+  val module = args(0) match {
+    case "async" => () => new BetterAsyncReset with RequireAsyncReset
+    case "sync" => () => new BetterAsyncReset
+  }
+
+  Driver.execute(Array("-td=rtl", "-tn=BetterAsyncReset"), module)
   //ChiselStage.execute(Array("-td=rtl", "-tn=BetterAsyncReset_true"),  () => new BetterAsyncReset(true))
   //ChiselMain.stage.execute()
 }
