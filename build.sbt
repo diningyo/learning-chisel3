@@ -150,3 +150,6 @@ lazy val vecTest = (project in file("subprj/vec-test")).
 
 lazy val betterAsyncReset = (project in file("subprj/better-async-reset")).
   settings(commonSettings: _*)
+
+lazy val parameterizeSwitch = (project in file("subprj/parameterize-switch")).
+  settings(commonSettings: _*)
