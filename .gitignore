@@ -347,3 +347,8 @@ project/target/
 
 # for intellij idea
 .idea/
+
+# for metals
+.metals/
+.bloop/
+project/metals.sbt
