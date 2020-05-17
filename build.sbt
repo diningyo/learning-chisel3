@@ -153,3 +153,6 @@ lazy val betterAsyncReset = (project in file("subprj/better-async-reset")).
 
 lazy val parameterizeSwitch = (project in file("subprj/parameterize-switch")).
   settings(commonSettings: _*)
+
+lazy val queueCompare = (project in file("subprj/queue-compare")).
+  settings(commonSettings: _*)
