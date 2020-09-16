@@ -142,7 +142,7 @@ lazy val multiIOModule = (project in file("subprj/multi-io-module")).
 lazy val blackboxCheck = (project in file("subprj/blackbox-check")).
   settings(commonSettings: _*)
 
-lazy val chisel320 = (project in file("subprj/chisel-3.2.0")).
+lazy val chisel32x = (project in file("subprj/chisel-3.2.x")).
   settings(commonSettings: _*)
 
 lazy val vecTest = (project in file("subprj/vec-test")).
@@ -155,4 +155,7 @@ lazy val parameterizeSwitch = (project in file("subprj/parameterize-switch")).
   settings(commonSettings: _*)
 
 lazy val queueCompare = (project in file("subprj/queue-compare")).
+  settings(commonSettings: _*)
+
+lazy val chisel33x = (project in file("subprj/chisel-3.3.x")).
   settings(commonSettings: _*)
