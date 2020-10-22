@@ -689,7 +689,7 @@ Chisel 3.3.0で変更のあった部分で気になる部分を確認した際�
 project chisel33x
 ```
 
-#### RTL生成方法の変更（Driver.execute→ChiselStage)
+#### RTL生成方法の変更（Driver.execute→ChiselStage）
 
 Chisel 3.3.0からChiselのソースコードのエラボレート方法が、`chisel3.Driver.execute`から`chisel3.stage.ChiselStage`を使う形に変更になった。
 
