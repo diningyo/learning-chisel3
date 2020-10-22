@@ -36,7 +36,8 @@
 - [blackboxCheck](#blackboxCheck)
 - [arbiterTest](#arbiterTest)
 - [simWDT](#simWDT)
-- [chisel320](#chisel320)
+- [chisel32x](#chisel32x)
+- [chisel33x](#chisel33x)
 
 ### chiselFlatSpec
 その名の通りChiselFlatSpecについて調査した際にサンプルとして作成したプロジェクト。
@@ -541,7 +542,7 @@ Assertion failed: WDT is expired!!
 treadle.executable.StopException: Failure Stop: result 1
 ```
 
-### chisel320
+### chisel32x
 
 Chisel 3.2.0で変更のあった部分で気になる部分を確認した際のコード。
 以下の機能の確認コードが含まれる。
@@ -557,7 +558,7 @@ Chisel 3.2.0で変更のあった部分で気になる部分を確認した際�
 #### プロジェクトの切り替え
 
 ```bash
-project chisel320
+project chisel32x
 ```
 
 #### Mux使用時のDontCare指定
@@ -569,11 +570,11 @@ runMain ElaborateMuxDontCare
 正常にエラボレートが終了し以下の2つのRTLが生成される。
 
 - rtl/chisel-3.2.0/MuxDontCare/MuxDontCare.v
-- rtl/chisel-3.2.0/MuxCaseDontCare/MuxCaseDontCare.v
+- rtl/chisel-3.2.x/MuxCaseDontCare/MuxCaseDontCare.v
 
 #### BundleLiterals
 
-- [subprj/chisel-3.2.0/src/main/TrialBundleLiterals.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialBundleLiterals.scala)
+- [subprj/chisel-3.2.x/src/main/TrialBundleLiterals.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/main/scala/TrialBundleLiterals.scala)
 
 ```bash
 runMain ElaborateBundleLiterals
@@ -581,14 +582,14 @@ runMain ElaborateBundleLiterals
 
 以下のRTLが生成される。
 
-- rtl/chisel-3.2.0/TrialBundleLiterals/TrialBundleLiterals.v
+- rtl/chisel-3.2.x/TrialBundleLiterals/TrialBundleLiterals.v
 
 #### Verilog形式のメモリ読み込みのサポート
 
 以下がテスト用のコード
 
-- [subprj/chisel-3.2.0/src/main/MemVerilogStyle.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/MemVerilogStyle.scala)
-- [subprj/chisel-3.2.0/src/test/MemVerilogStyleTester.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/test/scala/MemVerilogStyleTester.scala)
+- [subprj/chisel-3.2.x/src/main/MemVerilogStyle.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/main/scala/MemVerilogStyle.scala)
+- [subprj/chisel-3.2.x/src/test/MemVerilogStyleTester.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/test/scala/MemVerilogStyleTester.scala)
 
 ```bash
 testOnly MemVerilogStyleTester
@@ -597,7 +598,7 @@ testOnly MemVerilogStyleTester
 テスト実行結果は以下のようになる。
 
 ```bash
-STARTING test_run_dir/chisel-3.2.0/MemVerilogStyle/MemVerilogStyleTester453628597/VMemVerilogStyle
+STARTING test_run_dir/chisel-3.2.x/MemVerilogStyle/MemVerilogStyleTester453628597/VMemVerilogStyle
 [info] [0.002] SEED 1571625549898
 [info] [0.011] c.io.rddata = 0x00000000
 [info] [0.014] c.io.rddata = 0x00000001 // @によるアドレス指定で"1"だけずれて配置
@@ -613,7 +614,7 @@ STARTING test_run_dir/chisel-3.2.0/MemVerilogStyle/MemVerilogStyleTester45362859
 
 `MixedVec`の使い方の確認
 
-- [subprj/chisel-3.2.0/src/main/TrialMixedVec.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialMixedVec.scala)
+- [subprj/chisel-3.2.x/src/main/TrialMixedVec.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/main/scala/TrialMixedVec.scala)
 
 ```bash
 runMain ElaborateMixedVec
@@ -621,19 +622,19 @@ runMain ElaborateMixedVec
 
 以下のRTLが生成される
 
-- rtl/chisel-3.2.0/BundleLiterals/TrialMixedVec.v
+- rtl/chisel-3.2.x/BundleLiterals/TrialMixedVec.v
 
 #### Strong enumsのサポート
 
 "Strong Enums"と紹介されている`ChiselEnum`の確認コード
 
-- [subprj/chisel-3.2.0/src/main/TrialStrongEnums.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialStrongEnums.scala)
+- [subprj/chisel-3.2.x/src/main/TrialStrongEnums.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/main/scala/TrialStrongEnums.scala)
 
 ```bash
 runMain ElaborateStrongEnums
 ```
 
-- rtl/chisel-3.2.0/TrialStrongEnums/TrialStrongEnums.v
+- rtl/chisel-3.2.x/TrialStrongEnums/TrialStrongEnums.v
 
 #### HasBlackBoxPath
 
@@ -661,10 +662,108 @@ testOnly TrialHasBlackBoxPathTester
 
 非同期リセットの確認コード
 
-- [subprj/chisel-3.2.0/src/main/TrialAsyncReset.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.0/src/main/scala/TrialAsyncReset.scala)
+- [subprj/chisel-3.2.x/src/main/TrialAsyncReset.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.2.x/src/main/scala/TrialAsyncReset.scala)
 
 ```bash
 runMain ElaborateTrialAsyncReset
 ```
 
-- rtl/chisel-3.2.0/TrialAsyncReset/TrialAsyncReset.v
+- rtl/chisel-3.2.x/TrialAsyncReset/TrialAsyncReset.v
+
+### chisel33x
+
+Chisel 3.3.0で変更のあった部分で気になる部分を確認した際のコード。
+以下の機能の確認コードが含まれる。
+
+- [RTL生成方法の変更（Driver.execute→ChiselStage）](#RTL生成方法の変更（Driver.execute→ChiselStage）)
+- [BundleLiterals](#BundleLiterals)
+- [ChiselのSyncReadMemのアクセス競合時の動作に関するオプションの追加](#ChiselのSyncReadMemのアクセス競合時の動作に関するオプションの追加)
+- [@chiselNameの強化](#@chiselNameの強化)
+- [BitPatが空白をサポート](#BitPatが空白をサポート)
+- [FixedPointの拡張](#FixedPointの拡張)
+- [printfがTABをサポート](#printfがTABをサポート)
+
+#### プロジェクトの切り替え
+
+```bash
+project chisel33x
+```
+
+#### RTL生成方法の変更（Driver.execute→ChiselStage)
+
+Chisel 3.3.0からChiselのソースコードのエラボレート方法が、`chisel3.Driver.execute`から`chisel3.stage.ChiselStage`を使う形に変更になった。
+
+- [subprj/chisel-3.3.x/src/main/Elaborate.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/Elaborate.scala)
+
+```bash
+runMain OldElaborate # Chisel 3.2.xまでの方法
+runMain NewElaborate # Chisel 3.3.0からの方法
+```
+
+参考：[Chisel3.3.0のリリースノートを確認した（2） - ChiselStageを使ったエラボレート ](https://www.tech-diningyo.info/entry/2020/05/17/164148)
+
+#### ChiselのSyncReadMemのアクセス競合時の動作に関するオプションの追加
+
+Chiselの`SyncReadMem`に`ruw`という引数が追加され、同一アドレスへのアクセス競合時の動作を指定できるようになった。
+
+- [subprj/chisel-3.3.x/src/main/SyncReadMemAccCollision.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/SyncReadMemAccCollision.scala)
+
+```bash
+runMain ElaborateSRMA # RTLの生成
+runMain TestSRMA # テストの実行
+```
+
+参考：[Chisel3.3.0のリリースノートを確認した（3） - SyncReadMemに追加された引数](https://www.tech-diningyo.info/entry/2020/07/26/225448)
+
+#### @chiselNameの強化
+
+アノテーション`@chiselName`の機能が強化され、Chiselの型以外のクラスについてもアノテーションの効果が得られるようになった。
+また、`NoChiselNamePrefix`という`@chiselName`の効果を打ち消すトレイトが追加された。このトレイトを適用することで、冗長な名前が生成されるのを抑制できる。
+
+- Non-`Bundle`な通常のクラスに対しての`@chiselName`の効果を確認するコード：[subprj/chisel-3.3.0/src/main/TestChiselName1.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/TestChiselName1TrialAsyncReset.scala)
+- `NoChiselNamePrefix`の効果を確認するコード：[subprj/chisel-3.3.0/src/main/TestChiselName2.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/TestChiselName2.scala)
+
+```bash
+runMain ElaborateChiselName # Non-Bundleのクラスに対しての@chiselNameの確認
+runMain ElaborateNoChiselNamePrefix # NoChiselNamePrefixの確認
+```
+
+- 参考
+  - [Chisel3.3.0のリリースノートを確認した（4） - @chiselNameが強化された](https://www.tech-diningyo.info/entry/2020/09/06/233726)
+  - [Chisel3.3.0のリリースノートを確認した（5） - NoChiselNamePrefix](https://www.tech-diningyo.info/entry/2020/09/22/113227)
+
+#### BitPatが空白をサポート
+
+`BitPat`でセパレータとして空白` `がサポートされた。
+
+- [subprj/chisel-3.3.x/src/main/TrialAsyncReset.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/TrialAsyncReset.scala)
+
+```bash
+runMain ElaborateBitPatWithWS
+```
+
+参考：[Chisel3.3.0のリリースノートを確認した（6） - 簡単なやつを３つ](https://www.tech-diningyo.info/entry/2020/09/30/224930#1283-BitPat%E3%81%A7%E7%A9%BA%E7%99%BD%E6%96%87%E5%AD%97%E3%81%8C%E4%BD%BF%E3%81%88%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%9F)
+
+#### FixedPointの拡張
+
+`FixedPoint`が拡張され、`Double`や`BigDecimal`からの変換が出来るようになった。
+
+- [subprj/chisel-3.2.x/src/main/ExpandToFixedPoint.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/ExpandToFixedPoint.scala)
+
+```bash
+runMain ExpandToFixedPoint
+```
+
+参考：[Chisel3.3.0のリリースノートを確認した（6） - 簡単なやつを３つ](https://www.tech-diningyo.info/entry/2020/09/30/224930#1284-Scala%E3%81%AEDoubleBigDecimal%E3%81%8B%E3%82%89FixedPoint%E3%81%B8%E3%81%AE%E5%A4%89%E6%8F%9B%E3%81%8C%E3%81%A7%E3%81%8D%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%9F)
+
+#### printfがTABをサポート
+
+`printf`でTAB文字`\t`がサポートされた
+
+- [subprj/chisel-3.3.x/src/main/TrialAsyncReset.scala](https://github.com/diningyo/learning-chisel3/blob/master/subprj/chisel-3.3.x/src/main/scala/TrialAsyncReset.scala)
+
+```bash
+runMain ElaborateTrialAsyncReset
+```
+
+参考：[Chisel3.3.0のリリースノートを確認した（6） - 簡単なやつを３つ](https://www.tech-diningyo.info/entry/2020/09/30/224930#1326-Printf%E3%81%8C%E3%82%BF%E3%83%96%E6%96%87%E5%AD%97%E3%82%92%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%81%97%E3%81%9F)
