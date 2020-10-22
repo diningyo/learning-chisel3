@@ -8,7 +8,9 @@ import chisel3.util.Counter
 @chiselName
 class Counter(w: Int) {
   val myReg = RegInit(0.U(w.W))
+  val myRegA = RegInit(0.U(w.W))
   myReg := myReg + 1.U
+  myRegA := myReg + 1.U
 }
 
 @chiselName
@@ -21,7 +23,7 @@ class TestNoChiselNamePrefix extends Module {
   val counter0 = new Counter(8)
   // Name of myReg will be "myReg"
   val counter1 = new Counter(8) with NoChiselNamePrefix
-  io.out := counter0.myReg + counter1.myReg
+  io.out := counter0.myRegA + counter1.myRegA
 }
 
 object ElaborateNoChiselNamePrefix extends App {
